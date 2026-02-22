@@ -136,13 +136,13 @@ export default function InEar() {
 
                 {(hasInEarTargets || hasInEarAdj) && (
                     <div style={{ marginTop: '10px', backgroundColor: 'rgba(50,50,50,0.5)', width: '90%', padding: '10px', borderRadius: '8px', textAlign: 'center' }}>
-                        <div style={{ color: '#aaa', fontSize: '1.2rem', fontFamily: 'cursive', marginBottom: '8px', fontWeight: 'bold' }}>In Ear Control</div>
+                        <div style={{ color: '#aaa', fontSize: '1.2rem', marginBottom: '8px', letterSpacing: '1px', fontWeight: 'bold' }}>IN-EAR CONTROL</div>
                         {hasInEarTargets && targets.map(tId => (
-                            <div key={tId} style={{ backgroundColor: '#2a2a2a', padding: '5px 10px', marginBottom: '5px', borderRadius: '4px', fontSize: '1.2rem', fontWeight: 'bold' }}>{inearTargetMap[tId] || tId}</div>
+                            <div key={tId} style={{ backgroundColor: '#2a2a2a', padding: '5px 10px', marginBottom: '5px', borderRadius: '4px', fontSize: '1.2rem', fontWeight: 'bold' }}>{(inearTargetMap[tId] || tId)} 인이어에</div>
                         ))}
                         {hasInEarAdj && (
                             <div style={{ backgroundColor: vol > 0 ? '#d32f2f' : '#1976d2', padding: '8px 10px', borderRadius: '4px', fontSize: '1.5rem', fontWeight: 'bold', display: 'inline-block', marginTop: '5px' }}>
-                                {vol > 0 ? `+${vol}` : vol}
+                                {vol > 0 ? `+${vol} 올려주세요` : `${vol} 내려주세요`}
                             </div>
                         )}
                     </div>

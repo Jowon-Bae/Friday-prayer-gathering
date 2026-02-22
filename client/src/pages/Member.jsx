@@ -113,17 +113,17 @@ export default function Member() {
 
             {(hasInEarTargets || hasInEarAdj) && (
                 <div className="member-cues-container" style={{ marginTop: '1.5rem', backgroundColor: 'rgba(50,50,50,0.5)', borderColor: '#555', minHeight: 'auto', paddingTop: '1.5rem', paddingBottom: '1.5rem', width: '90%', maxWidth: '600px' }}>
-                    <div style={{ color: '#aaa', fontSize: '1.8rem', fontFamily: 'cursive', marginBottom: '1rem', fontWeight: 'bold' }}>In Ear Control</div>
+                    <div style={{ color: '#aaa', fontSize: '1.5rem', marginBottom: '1rem', letterSpacing: '2px', fontWeight: 'bold' }}>IN-EAR CONTROL</div>
 
                     {hasInEarTargets && state.current_inear_targets.map(tId => (
                         <div key={tId} className="member-cue" style={{ backgroundColor: '#2a2a2a', fontSize: '1.8rem', padding: '0.8rem 1.5rem', margin: '0.3rem' }}>
-                            {inearTargetMap[tId] || tId}
+                            {(inearTargetMap[tId] || tId)} 인이어에
                         </div>
                     ))}
 
                     {hasInEarAdj && (
                         <div className="member-cue" style={{ backgroundColor: state.current_inear_vol > 0 ? '#d32f2f' : '#1976d2', fontSize: '2.5rem', padding: '1rem 2rem', margin: '0.5rem' }}>
-                            {state.current_inear_vol > 0 ? `+${state.current_inear_vol}` : state.current_inear_vol}
+                            {state.current_inear_vol > 0 ? `+${state.current_inear_vol} 올려주세요` : `${state.current_inear_vol} 내려주세요`}
                         </div>
                     )}
                 </div>
