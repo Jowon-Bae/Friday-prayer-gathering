@@ -135,14 +135,29 @@ export default function InEar() {
                 </div>
 
                 {(hasInEarTargets || hasInEarAdj) && (
-                    <div style={{ marginTop: '10px', backgroundColor: 'rgba(50,50,50,0.5)', width: '90%', padding: '10px', borderRadius: '8px', textAlign: 'center' }}>
+                    <div style={{ marginTop: '10px', backgroundColor: 'rgba(50,50,50,0.5)', width: '90%', padding: '10px', borderRadius: '8px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <div style={{ color: '#aaa', fontSize: '1.2rem', marginBottom: '8px', letterSpacing: '1px', fontWeight: 'bold' }}>IN-EAR CONTROL</div>
-                        {hasInEarTargets && targets.map(tId => (
-                            <div key={tId} style={{ backgroundColor: '#2a2a2a', padding: '5px 10px', marginBottom: '5px', borderRadius: '4px', fontSize: '1.2rem', fontWeight: 'bold' }}>{(inearTargetMap[tId] || tId)} 인이어에</div>
-                        ))}
+
+                        {hasInEarTargets && (
+                            <>
+                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '5px', color: 'white' }}>제 인이어에</div>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '5px' }}>
+                                    {targets.map(tId => (
+                                        <div key={tId} style={{ backgroundColor: '#2a2a2a', padding: '5px 10px', borderRadius: '4px', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                                            {inearTargetMap[tId] || tId}
+                                        </div>
+                                    ))}
+                                </div>
+                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', marginTop: '5px', marginBottom: '5px', color: 'white' }}>소리를</div>
+                            </>
+                        )}
+
                         {hasInEarAdj && (
-                            <div style={{ backgroundColor: vol > 0 ? '#d32f2f' : '#1976d2', padding: '8px 10px', borderRadius: '4px', fontSize: '1.5rem', fontWeight: 'bold', display: 'inline-block', marginTop: '5px' }}>
-                                {vol > 0 ? `+${vol} 올려주세요` : `${vol} 내려주세요`}
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div style={{ backgroundColor: vol > 0 ? '#d32f2f' : '#1976d2', padding: '8px 10px', borderRadius: '4px', fontSize: '1.5rem', fontWeight: 'bold', display: 'inline-block', marginBottom: '5px' }}>
+                                    {vol > 0 ? `+${vol}` : vol}
+                                </div>
+                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'white' }}>부탁드립니다</div>
                             </div>
                         )}
                     </div>
