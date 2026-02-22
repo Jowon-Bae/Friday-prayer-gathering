@@ -90,7 +90,11 @@ export default function Member() {
     return (
         <div
             className="member-container"
-            style={{ backgroundColor: state.current_color, paddingBottom: '2rem' }}
+            style={{
+                backgroundColor: state.current_color,
+                paddingBottom: '2rem',
+                paddingTop: 'max(40px, env(safe-area-inset-top))'
+            }}
         >
             <div className={`connection-status ${isConnected ? 'status-connected' : 'status-disconnected'}`}>
                 {isConnected ? 'LIVE' : 'RECONNECTING...'}
