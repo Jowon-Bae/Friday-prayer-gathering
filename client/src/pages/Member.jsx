@@ -134,7 +134,9 @@ export default function Member() {
                             <div className="member-cue" style={{ backgroundColor: state.current_inear_vol > 0 ? '#d32f2f' : '#1976d2', fontSize: '2.5rem', padding: '1rem 2rem', margin: '0 0 10px 0' }}>
                                 {state.current_inear_vol > 0 ? `+${state.current_inear_vol}` : state.current_inear_vol}
                             </div>
-                            <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: 'white' }}>부탁드립니다</div>
+                            <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: 'white' }}>
+                                {state.current_inear_vol > 0 ? '올려주세요' : '내려주세요'}
+                            </div>
                         </div>
                     )}
                 </div>

@@ -157,7 +157,9 @@ export default function InEar() {
                                 <div style={{ backgroundColor: vol > 0 ? '#d32f2f' : '#1976d2', padding: '8px 10px', borderRadius: '4px', fontSize: '1.5rem', fontWeight: 'bold', display: 'inline-block', marginBottom: '5px' }}>
                                     {vol > 0 ? `+${vol}` : vol}
                                 </div>
-                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'white' }}>부탁드립니다</div>
+                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'white' }}>
+                                    {vol > 0 ? '올려주세요' : '내려주세요'}
+                                </div>
                             </div>
                         )}
                     </div>
