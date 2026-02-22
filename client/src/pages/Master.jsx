@@ -132,7 +132,7 @@ export default function Master() {
                     placeholder="예: 77"
                     value={songNum}
                     onChange={handleSongChange}
-                    style={{ fontSize: '1.2rem', padding: '4px 8px', width: '120px' }}
+                    style={{ fontSize: '1.2rem', padding: '4px 8px', width: '70px' }}
                 />
                 {songMap[songNum] || songMap[parseInt(songNum, 10)] ? (
                     <span style={{ fontSize: '1rem', fontWeight: 'bold', color: 'white', marginLeft: '5px' }}>
