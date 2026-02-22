@@ -148,7 +148,7 @@ export default function Member() {
                 </div>
             )}
 
-            <div className="member-label" style={{ marginTop: '2rem' }}>BPM</div>
+            <div className="member-label" style={{ marginTop: '2rem', fontSize: '5vw' }}>BPM</div>
             <div className="member-bpm">{state.current_bpm}</div>
         </div>
     );
