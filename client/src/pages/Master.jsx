@@ -135,11 +135,11 @@ export default function Master() {
                     value={songNum}
                     onChange={handleSongChange}
                 />
-                {songMap[songNum] && (
+                {songMap[songNum] || songMap[parseInt(songNum, 10)] ? (
                     <span style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'white', marginLeft: '10px' }}>
-                        {songMap[songNum]}
+                        {songMap[songNum] || songMap[parseInt(songNum, 10)]}
                     </span>
-                )}
+                ) : null}
             </div>
 
             <div className="tempo-control">

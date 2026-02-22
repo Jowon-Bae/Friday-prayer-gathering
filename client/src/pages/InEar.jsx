@@ -125,11 +125,11 @@ export default function InEar() {
                 {memberState.current_song && (
                     <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', opacity: 0.8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <div>SONG NO. {memberState.current_song}</div>
-                        {songMap[memberState.current_song] && (
+                        {(songMap[memberState.current_song] || songMap[parseInt(memberState.current_song, 10)]) ? (
                             <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'white', marginTop: '3px' }}>
-                                {songMap[memberState.current_song]}
+                                {songMap[memberState.current_song] || songMap[parseInt(memberState.current_song, 10)]}
                             </div>
-                        )}
+                        ) : null}
                     </div>
                 )}
 

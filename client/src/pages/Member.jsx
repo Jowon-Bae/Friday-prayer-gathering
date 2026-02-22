@@ -100,11 +100,11 @@ export default function Member() {
                 <div className="member-song">
                     <span className="member-song-label">SONG NO.</span>
                     <span className="member-song-number">{state.current_song}</span>
-                    {songMap[state.current_song] && (
+                    {(songMap[state.current_song] || songMap[parseInt(state.current_song, 10)]) ? (
                         <span style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', marginTop: '10px' }}>
-                            {songMap[state.current_song]}
+                            {songMap[state.current_song] || songMap[parseInt(state.current_song, 10)]}
                         </span>
-                    )}
+                    ) : null}
                 </div>
             )}
 
