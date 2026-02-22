@@ -231,14 +231,14 @@ export default function Master() {
 
                 <div className="cue-divider"></div>
 
-                <div style={{ gridColumn: '1 / -1', marginTop: '10px' }}>
+                <div style={{ gridColumn: '1 / -1', marginTop: '5px' }}>
                     <button
                         className="cue-btn"
                         style={{
                             backgroundColor: '#2a2a2a',
                             width: '100%',
                             fontSize: '1.5rem',
-                            padding: '1.5rem',
+                            padding: '1rem',
                             border: '2px solid #444',
                         }}
                         onClick={() => navigate('/inear')}
