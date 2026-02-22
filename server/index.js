@@ -22,6 +22,7 @@ const io = new Server(server, {
 
 // Global state
 let appState = {
+    is_playing: false,
     current_bpm: 70, // changed default to 70
     current_cue: '', // This will hold 'Sections' (V1, CH, BR)
     current_key: '', // This will hold 'Keys' (KA, KBb, KC)

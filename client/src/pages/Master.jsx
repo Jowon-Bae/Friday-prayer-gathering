@@ -48,6 +48,7 @@ export default function Master() {
     const [activeModifiers, setActiveModifiers] = useState([]);
     const [songNum, setSongNum] = useState('');
     const [isConnected, setIsConnected] = useState(socket.connected);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     // For continuous button press
     const holdTimeoutRef = useRef(null);
@@ -62,6 +63,7 @@ export default function Master() {
             if (state.current_key !== undefined) setActiveKey(state.current_key);
             if (state.current_song !== undefined) setSongNum(state.current_song);
             if (state.current_modifiers !== undefined) setActiveModifiers(state.current_modifiers);
+            if (state.is_playing !== undefined) setIsPlaying(state.is_playing);
         });
 
         return () => {
@@ -155,9 +157,30 @@ export default function Master() {
                     onTouchEnd={(e) => { e.preventDefault(); stopHold(); }}
                 >-1</button>
 
-                <div className="tempo-display" style={{ margin: '0 5px' }}>
+                <div className="tempo-display" style={{ margin: '0 5px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <span className="tempo-label">TEMPO</span>
-                    <span className="tempo-number">{bpm}</span>
+                    <span
+                        className="tempo-number"
+                        style={isPlaying ? { animation: `bpm-blink ${60 / bpm}s infinite` } : {}}
+                    >
+                        {bpm}
+                    </span>
+                    <button
+                        onClick={() => socket.emit('update_state', { is_playing: !isPlaying })}
+                        style={{
+                            marginTop: '4px',
+                            padding: '4px 12px',
+                            background: isPlaying ? '#dc2626' : '#16a34a',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            fontWeight: 'bold',
+                            fontSize: '0.9rem',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        {isPlaying ? 'STOP' : '▶ START'}
+                    </button>
                 </div>
 
                 <button

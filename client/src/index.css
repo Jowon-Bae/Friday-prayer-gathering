@@ -202,6 +202,26 @@ body {
   line-height: 1;
 }
 
+@keyframes bpm-blink {
+  0% {
+    opacity: 1;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+    transform: scale(1.05);
+  }
+
+  15% {
+    opacity: 0.5;
+    text-shadow: none;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0.5;
+    text-shadow: none;
+    transform: scale(1);
+  }
+}
+
 /* Cue Grid (Master) */
 .cue-grid {
   flex: 1;
