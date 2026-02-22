@@ -205,19 +205,22 @@ body {
 @keyframes bpm-blink {
   0% {
     opacity: 1;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 1);
-    transform: scale(1.05);
+    color: #bbf7d0;
+    text-shadow: 0 0 20px #4ade80, 0 0 40px #22c55e, 0 0 80px #16a34a, 0 0 120px #15803d;
+    transform: scale(1.1);
   }
 
   15% {
-    opacity: 0.5;
-    text-shadow: none;
+    opacity: 0.6;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     transform: scale(1);
   }
 
   100% {
-    opacity: 0.5;
-    text-shadow: none;
+    opacity: 0.6;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     transform: scale(1);
   }
 }
