@@ -25,7 +25,7 @@ function App() {
 function Home() {
     return (
         <div className="home-container">
-            <img src="/logo2.png" alt="App Icon" className="home-logo" />
+            <img src="/logo.png" alt="App Icon" className="home-logo" />
             <h1>Seouldream Church<br />금요기도집회 예배팀<br />Cue System</h1>
             <div className="home-links">
                 <Link to="/master" className="home-btn master-btn">Master Mode (인도자)</Link>
