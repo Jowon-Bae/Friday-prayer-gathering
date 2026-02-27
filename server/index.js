@@ -3,13 +3,58 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
+import multer from 'multer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
+app.use(express.json());
+
+// Set up storage for uploaded files
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+}
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadsDir);
+    },
+    filename: function (req, file, cb) {
+        // Create unique filenames avoiding collisions
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        // Extract original extension safely
+        const ext = path.extname(file.originalname);
+        cb(null, uniqueSuffix + ext);
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
+
+// Serve the uploads directory statically so clients can download files
+app.use('/uploads', express.static(uploadsDir));
+
+// File upload endpoint
+app.post('/upload', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded.' });
+    }
+    // Return relative URL for the client to use
+    const fileUrl = `/uploads/${req.file.filename}`;
+    res.json({
+        url: fileUrl,
+        originalName: req.file.originalname,
+        mimetype: req.file.mimetype,
+        size: req.file.size
+    });
+});
 
 const server = createServer(app);
 
@@ -56,7 +101,10 @@ io.on('connection', (socket) => {
         const message = {
             id: Date.now() + Math.random().toString(36).substr(2, 5),
             role: data.role || 'User',
-            text: data.text,
+            text: data.text || '',
+            fileUrl: data.fileUrl || null,
+            fileName: data.fileName || null,
+            fileType: data.fileType || null,
             timestamp: new Date().toISOString()
         };
 

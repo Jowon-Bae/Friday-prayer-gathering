@@ -6,7 +6,9 @@ export default function ChatOverlay({ socket, role }) {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [unreadCount, setUnreadCount] = useState(0);
+    const [isUploading, setIsUploading] = useState(false);
     const messagesEndRef = useRef(null);
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         if (!socket) return;
@@ -47,7 +49,7 @@ export default function ChatOverlay({ socket, role }) {
     };
 
     const sendMessage = (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
         if (!inputValue.trim()) return;
 
         socket.emit('send_chat', {
@@ -55,6 +57,56 @@ export default function ChatOverlay({ socket, role }) {
             role: role
         });
         setInputValue('');
+    };
+
+    const handleFileSelect = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Check file size (10MB limit)
+        if (file.size > 10 * 1024 * 1024) {
+            alert('파일 크기는 10MB를 초과할 수 없습니다.');
+            return;
+        }
+
+        setIsUploading(true);
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            // Determine the correct server URL
+            const isCloudflare = window.location.hostname.includes('trycloudflare.com');
+            const serverUrl = import.meta.env.PROD ? '' : (isCloudflare
+                ? `https://outside-concepts-mouse-hypothesis.trycloudflare.com`
+                : `http://${window.location.hostname}:3001`);
+
+            const response = await fetch(`${serverUrl}/upload`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Upload failed');
+            }
+
+            const data = await response.json();
+
+            // Send the file info as a chat message
+            socket.emit('send_chat', {
+                text: '', // No text for pure file uploads
+                fileUrl: `${serverUrl}${data.url}`,
+                fileName: data.originalName,
+                fileType: data.mimetype,
+                role: role
+            });
+
+        } catch (error) {
+            console.error('File upload error:', error);
+            alert('파일 업로드에 실패했습니다.');
+        } finally {
+            setIsUploading(false);
+            if (fileInputRef.current) fileInputRef.current.value = ''; // Reset input
+        }
     };
 
     // Use formatting for display based on timestamp
@@ -92,12 +144,29 @@ export default function ChatOverlay({ socket, role }) {
                     ) : (
                         messages.map((msg, idx) => {
                             const isMe = msg.role === role;
+                            const isImage = msg.fileType && msg.fileType.startsWith('image/');
                             return (
                                 <div key={msg.id || idx} className={`chat-bubble-wrapper ${isMe ? 'mine' : 'theirs'}`}>
                                     {!isMe && <div className="chat-role">{msg.role}</div>}
                                     <div className="chat-bubble-row">
                                         <div className={`chat-bubble ${isMe ? 'mine' : 'theirs'}`}>
-                                            {msg.text}
+                                            {msg.fileUrl ? (
+                                                <div className="chat-attachment">
+                                                    {isImage ? (
+                                                        <a href={msg.fileUrl} target="_blank" rel="noopener noreferrer">
+                                                            <img src={msg.fileUrl} alt={msg.fileName} className="chat-image-preview" />
+                                                        </a>
+                                                    ) : (
+                                                        <a href={msg.fileUrl} target="_blank" rel="noopener noreferrer" className="chat-file-link">
+                                                            <span style={{ fontSize: '1.2rem', marginRight: '6px' }}>📄</span>
+                                                            <span className="truncate">{msg.fileName}</span>
+                                                        </a>
+                                                    )}
+                                                    {msg.text && <div style={{ marginTop: '8px' }}>{msg.text}</div>}
+                                                </div>
+                                            ) : (
+                                                msg.text
+                                            )}
                                         </div>
                                         <div className="chat-time">{formatTime(msg.timestamp)}</div>
                                     </div>
@@ -109,14 +178,30 @@ export default function ChatOverlay({ socket, role }) {
                 </div>
 
                 <form className="chat-input-area" onSubmit={sendMessage}>
+                    <button
+                        type="button"
+                        className="chat-attach-btn"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isUploading}
+                    >
+                        📎
+                    </button>
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        onChange={handleFileSelect}
+                        accept="image/*,application/pdf"
+                    />
                     <input
                         type="text"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        placeholder="메시지를 입력하세요..."
+                        placeholder={isUploading ? "파일 업로드 중..." : "메시지를 입력하세요..."}
                         className="chat-input"
+                        disabled={isUploading}
                     />
-                    <button type="submit" className="chat-send-btn">전송</button>
+                    <button type="submit" className="chat-send-btn" disabled={isUploading}>전송</button>
                 </form>
             </div>
 

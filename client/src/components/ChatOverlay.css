@@ -195,6 +195,23 @@
     border-color: #3b82f6;
 }
 
+.chat-attach-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-attach-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .chat-send-btn {
     background-color: #3b82f6;
     color: white;
@@ -203,4 +220,44 @@
     border-radius: 20px;
     font-weight: bold;
     cursor: pointer;
+}
+
+.chat-send-btn:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+.chat-attachment {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-image-preview {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+    display: block;
+}
+
+.chat-file-link {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-file-link:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
 }
