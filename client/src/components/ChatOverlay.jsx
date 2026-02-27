@@ -7,8 +7,11 @@ export default function ChatOverlay({ socket, role }) {
     const [inputValue, setInputValue] = useState('');
     const [unreadCount, setUnreadCount] = useState(0);
     const [isUploading, setIsUploading] = useState(false);
+    const [fullscreenImage, setFullscreenImage] = useState(null); // stores the msg object of the image
+    const [dragOffset, setDragOffset] = useState(0);              // for swipe-down to dismiss
     const messagesEndRef = useRef(null);
     const fileInputRef = useRef(null);
+    const touchStartY = useRef(0);
 
     useEffect(() => {
         if (!socket) return;
@@ -118,6 +121,37 @@ export default function ChatOverlay({ socket, role }) {
     const deleteMessage = (msgId) => {
         if (window.confirm('정말 이 메시지(파일)를 삭제하시겠습니까?')) {
             socket.emit('delete_chat', msgId);
+            if (fullscreenImage && fullscreenImage.id === msgId) {
+                closeFullscreen();
+            }
+        }
+    };
+
+    // Fullscreen Image Handlers
+    const openFullscreen = (msg) => setFullscreenImage(msg);
+    const closeFullscreen = () => {
+        setFullscreenImage(null);
+        setDragOffset(0);
+    };
+
+    const handleTouchStart = (e) => {
+        touchStartY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e) => {
+        if (!fullscreenImage) return;
+        const currentY = e.touches[0].clientY;
+        const diff = currentY - touchStartY.current;
+        if (diff > 0) {
+            setDragOffset(diff);
+        }
+    };
+
+    const handleTouchEnd = () => {
+        if (dragOffset > 100) { // Dragged down more than 100px
+            closeFullscreen();
+        } else {
+            setDragOffset(0); // Snap back
         }
     };
 
@@ -165,26 +199,27 @@ export default function ChatOverlay({ socket, role }) {
                                             {msg.fileUrl ? (
                                                 <div className="chat-attachment">
                                                     {isImage ? (
-                                                        <a href={msg.fileUrl} target="_blank" rel="noopener noreferrer">
+                                                        <div onClick={() => openFullscreen(msg)} style={{ cursor: 'pointer' }}>
                                                             <img src={msg.fileUrl} alt={msg.fileName} className="chat-image-preview" />
-                                                        </a>
-                                                    ) : (
-                                                        <div className="chat-file-info">
-                                                            <span style={{ fontSize: '1.2rem', marginRight: '6px' }}>📄</span>
-                                                            <span className="truncate">{msg.fileName}</span>
                                                         </div>
+                                                    ) : (
+                                                        <>
+                                                            <div className="chat-file-info">
+                                                                <span style={{ fontSize: '1.2rem', marginRight: '6px' }}>📄</span>
+                                                                <span className="truncate">{msg.fileName}</span>
+                                                            </div>
+                                                            <div className="chat-attachment-actions">
+                                                                <a href={msg.fileUrl} download={msg.fileName} target="_blank" rel="noopener noreferrer" className="chat-action-btn download-btn">
+                                                                    ⬇️ 다운로드
+                                                                </a>
+                                                                {isMe && (
+                                                                    <button onClick={() => deleteMessage(msg.id)} className="chat-action-btn delete-btn">
+                                                                        🗑️ 취소/삭제
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </>
                                                     )}
-
-                                                    <div className="chat-attachment-actions">
-                                                        <a href={msg.fileUrl} download={msg.fileName} target="_blank" rel="noopener noreferrer" className="chat-action-btn download-btn">
-                                                            ⬇️ 다운로드
-                                                        </a>
-                                                        {isMe && (
-                                                            <button onClick={() => deleteMessage(msg.id)} className="chat-action-btn delete-btn">
-                                                                🗑️ 취소/삭제
-                                                            </button>
-                                                        )}
-                                                    </div>
 
                                                     {msg.text && <div style={{ marginTop: '8px' }}>{msg.text}</div>}
                                                 </div>
@@ -231,6 +266,42 @@ export default function ChatOverlay({ socket, role }) {
 
             {/* Backdrop to close when clicking outside */}
             {isOpen && <div className="chat-backdrop" onClick={toggleChat}></div>}
+
+            {/* Fullscreen Image Viewer Modal */}
+            {fullscreenImage && (
+                <div
+                    className="chat-fullscreen-modal"
+                    style={{ backgroundColor: `rgba(0, 0, 0, ${Math.max(0, 0.9 - (dragOffset / 500))})` }}
+                >
+                    <div
+                        className="chat-fullscreen-content"
+                        style={{ transform: `translateY(${dragOffset}px)` }}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                    >
+                        <button className="chat-fullscreen-close" onClick={closeFullscreen}>✕</button>
+
+                        <img
+                            src={fullscreenImage.fileUrl}
+                            alt={fullscreenImage.fileName}
+                            className="chat-fullscreen-img"
+                        />
+
+                        {/* Actions overlayed at the bottom of the fullscreen image */}
+                        <div className="chat-fullscreen-actions">
+                            <a href={fullscreenImage.fileUrl} download={fullscreenImage.fileName} target="_blank" rel="noopener noreferrer" className="chat-action-btn download-btn shadow-strong">
+                                ⬇️ 사진 다운로드
+                            </a>
+                            {fullscreenImage.role === role && (
+                                <button onClick={() => deleteMessage(fullscreenImage.id)} className="chat-action-btn delete-btn shadow-strong">
+                                    🗑️ 발송 취소 (삭제)
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
