@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { songMap } from '../utils/songMap';
+import ChatOverlay from '../components/ChatOverlay';
 
 const isCloudflare = window.location.hostname.includes('trycloudflare.com');
 const serverUrl = import.meta.env.PROD ? '' : (isCloudflare
@@ -271,6 +272,8 @@ export default function Master() {
                     </button>
                 </div>
             </div>
+
+            <ChatOverlay socket={socket} role="인도자(Master)" />
         </div>
     );
 }

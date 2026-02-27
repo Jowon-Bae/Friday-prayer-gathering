@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { songMap } from '../utils/songMap';
+import ChatOverlay from '../components/ChatOverlay';
 
 const isCloudflare = window.location.hostname.includes('trycloudflare.com');
 const serverUrl = import.meta.env.PROD ? '' : (isCloudflare
@@ -159,6 +160,8 @@ export default function Member() {
             >
                 {state.current_bpm}
             </div>
+
+            <ChatOverlay socket={socket} role="팀원(Member)" />
         </div>
     );
 }

@@ -33,11 +33,15 @@ let appState = {
     current_inear_vol: 0
 };
 
-io.on('connection', (socket) => {
-    console.log('Client connected:', socket.id);
+let chatHistory = [];
+const MAX_CHAT_HISTORY = 50;
 
-    // Send initial state to the newly connected client
+io.on('connection', (socket) => {
+    console.log('A user connected:', socket.id);
+
+    // Send current state and chat history to the newly connected client
     socket.emit('state_update', appState);
+    socket.emit('chat_history', chatHistory);
 
     // Listen for state changes from Master
     socket.on('update_state', (newState) => {
@@ -45,6 +49,23 @@ io.on('connection', (socket) => {
 
         // Broadcast updated state to all clients
         io.emit('state_update', appState);
+    });
+
+    // Listen for new chat messages
+    socket.on('send_chat', (data) => {
+        const message = {
+            id: Date.now() + Math.random().toString(36).substr(2, 5),
+            role: data.role || 'User',
+            text: data.text,
+            timestamp: new Date().toISOString()
+        };
+
+        chatHistory.push(message);
+        if (chatHistory.length > MAX_CHAT_HISTORY) {
+            chatHistory.shift(); // Keep only the latest N messages
+        }
+
+        io.emit('chat_message', message);
     });
 
     socket.on('disconnect', () => {
