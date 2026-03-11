@@ -48,6 +48,7 @@ export default function Master() {
     const [activeKey, setActiveKey] = useState('');
     const [activeModifiers, setActiveModifiers] = useState([]);
     const [songNum, setSongNum] = useState('');
+    const [inputSongNum, setInputSongNum] = useState('');
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [isPlaying, setIsPlaying] = useState(false);
 
@@ -62,7 +63,10 @@ export default function Master() {
             setBpm(state.current_bpm);
             setActiveSection(state.current_cue);
             if (state.current_key !== undefined) setActiveKey(state.current_key);
-            if (state.current_song !== undefined) setSongNum(state.current_song);
+            if (state.current_song !== undefined) {
+                setSongNum(state.current_song);
+                setInputSongNum(state.current_song);
+            }
             if (state.current_modifiers !== undefined) setActiveModifiers(state.current_modifiers);
             if (state.is_playing !== undefined) setIsPlaying(state.is_playing);
         });
@@ -121,9 +125,16 @@ export default function Master() {
     };
 
     const handleSongChange = (e) => {
-        const val = e.target.value;
-        setSongNum(val);
-        socket.emit('update_state', { current_song: val });
+        setInputSongNum(e.target.value);
+    };
+
+    const handleGoClick = () => {
+        if (!inputSongNum) return;
+        setSongNum(inputSongNum);
+        socket.emit('update_state', {
+            current_song: inputSongNum,
+            song_trigger: Date.now()
+        });
     };
 
     return (
@@ -133,13 +144,28 @@ export default function Master() {
                 <input
                     type="text"
                     className="song-input"
-                    value={songNum}
+                    value={inputSongNum}
                     onChange={handleSongChange}
                     style={{ fontSize: '1.2rem', padding: '4px 8px', width: '70px' }}
                 />
-                {songMap[songNum] || songMap[parseInt(songNum, 10)] ? (
+                <button
+                    onClick={handleGoClick}
+                    style={{
+                        padding: '6px 12px',
+                        backgroundColor: '#3b82f6',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '6px',
+                        fontSize: '1rem',
+                        fontWeight: 'bold',
+                        cursor: 'pointer'
+                    }}
+                >
+                    GO
+                </button>
+                {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)] ? (
                     <span style={{ fontSize: '1rem', fontWeight: 'bold', color: 'white', marginLeft: '5px' }}>
-                        {songMap[songNum] || songMap[parseInt(songNum, 10)]}
+                        {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)]}
                     </span>
                 ) : null}
             </div>

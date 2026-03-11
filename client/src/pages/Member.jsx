@@ -52,9 +52,19 @@ export default function Member() {
         current_modifiers: [],
         current_color: '#121212',
         current_inear_targets: [],
-        current_inear_vol: 0
+        current_inear_vol: 0,
+        song_trigger: 0
     });
     const [isConnected, setIsConnected] = useState(socket.connected);
+    const [isTransitioning, setIsTransitioning] = useState(false);
+
+    useEffect(() => {
+        if (state.song_trigger > 0) {
+            setIsTransitioning(true);
+            const timer = setTimeout(() => setIsTransitioning(false), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [state.song_trigger]);
 
     useEffect(() => {
         socket.on('connect', () => setIsConnected(true));
@@ -97,6 +107,19 @@ export default function Member() {
                 paddingTop: 'max(60px, env(safe-area-inset-top))'
             }}
         >
+            {isTransitioning && (
+                <div className="flash-transition" style={{
+                    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                    zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center'
+                }}>
+                    <h1 style={{ fontSize: '10vw', fontWeight: '900', color: 'black',
+                        textAlign: 'center', lineHeight: 1.2, margin: '0 20px',
+                        textShadow: '2px 2px 4px white, -2px -2px 4px white, 2px -2px 4px white, -2px 2px 4px white'
+                    }}>
+                        다음 곡으로<br/>넘어가겠습니다!
+                    </h1>
+                </div>
+            )}
             <div className={`connection-status ${isConnected ? 'status-connected' : 'status-disconnected'}`}>
                 {isConnected ? 'LIVE' : 'RECONNECTING...'}
             </div>
