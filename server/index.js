@@ -74,6 +74,7 @@ let appState = {
     current_modifiers: [], // This will hold 'Modifiers' (ONEMORE, KEYUP)
     current_color: '#000000',
     current_song: '',
+    next_song: '',
     current_inear_targets: [],
     current_inear_vol: 0
 };

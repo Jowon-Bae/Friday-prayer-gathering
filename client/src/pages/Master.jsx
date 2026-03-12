@@ -48,6 +48,7 @@ export default function Master() {
     const [activeKey, setActiveKey] = useState('');
     const [activeModifiers, setActiveModifiers] = useState([]);
     const [songNum, setSongNum] = useState('');
+    const [nextSongNum, setNextSongNum] = useState('');
     const [inputSongNum, setInputSongNum] = useState('');
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -65,7 +66,11 @@ export default function Master() {
             if (state.current_key !== undefined) setActiveKey(state.current_key);
             if (state.current_song !== undefined) {
                 setSongNum(state.current_song);
-                setInputSongNum(state.current_song);
+                // Only update input if it's empty to prevent overwriting user typing
+                setInputSongNum(prev => prev || state.current_song);
+            }
+            if (state.next_song !== undefined) {
+                setNextSongNum(state.next_song);
             }
             if (state.current_modifiers !== undefined) setActiveModifiers(state.current_modifiers);
             if (state.is_playing !== undefined) setIsPlaying(state.is_playing);
@@ -130,10 +135,22 @@ export default function Master() {
 
     const handleGoClick = () => {
         if (!inputSongNum) return;
-        setSongNum(inputSongNum);
-        socket.emit('update_state', {
-            current_song: inputSongNum
-        });
+        
+        // If there's already a current song, the next GO sets the next_song.
+        // Otherwise, it sets the current_song.
+        if (songNum && songNum !== inputSongNum) {
+            socket.emit('update_state', {
+                next_song: inputSongNum
+            });
+            setNextSongNum(inputSongNum);
+            setInputSongNum('');
+        } else {
+            socket.emit('update_state', {
+                current_song: inputSongNum
+            });
+            setSongNum(inputSongNum);
+            setInputSongNum('');
+        }
     };
 
     return (
@@ -163,12 +180,30 @@ export default function Master() {
                 >
                     GO
                 </button>
-
-                {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)] ? (
-                    <span style={{ fontSize: '1rem', fontWeight: 'bold', color: 'white', marginLeft: '5px' }}>
-                        {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)]}
-                    </span>
-                ) : null}
+            </div>
+            
+            <div style={{ display: 'flex', gap: '20px', margin: '10px 0', width: '100%', justifyContent: 'center' }}>
+                <div style={{ flex: 1, backgroundColor: '#222', padding: '10px', borderRadius: '8px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.8rem', color: '#888', marginBottom: '5px' }}>현재 곡</div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{songNum || '-'}</div>
+                    <div style={{ fontSize: '0.9rem', color: '#aaa' }}>{songMap[songNum] || songMap[parseInt(songNum, 10)] || ''}</div>
+                </div>
+                <div style={{ flex: 1, backgroundColor: '#222', padding: '10px', borderRadius: '8px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.8rem', color: '#888', marginBottom: '5px' }}>다음 곡</div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{nextSongNum || '-'}</div>
+                    <div style={{ fontSize: '0.9rem', color: '#aaa' }}>{songMap[nextSongNum] || songMap[parseInt(nextSongNum, 10)] || ''}</div>
+                    {nextSongNum && (
+                        <button
+                            onClick={() => {
+                                socket.emit('update_state', { next_song: '' });
+                                setNextSongNum('');
+                            }}
+                            style={{ marginTop: '5px', fontSize: '0.7rem', padding: '2px 8px', background: '#555', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        >
+                            취소
+                        </button>
+                    )}
+                </div>
             </div>
 
             <div className="tempo-control" style={{ position: 'relative', paddingTop: '35px', paddingBottom: '10px' }}>
@@ -290,7 +325,17 @@ export default function Master() {
                         fontSize: '1.4rem',
                         whiteSpace: 'pre-line'
                     }}
-                    onClick={() => socket.emit('update_state', { song_trigger: Date.now() })}
+                    onClick={() => {
+                        socket.emit('update_state', { 
+                            song_trigger: Date.now(),
+                            current_song: nextSongNum || songNum,
+                            next_song: '' 
+                        });
+                        if (nextSongNum) {
+                            setSongNum(nextSongNum);
+                            setNextSongNum('');
+                        }
+                    }}
                 >
                     다음 곡
                 </button>

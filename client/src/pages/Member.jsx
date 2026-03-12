@@ -51,6 +51,8 @@ export default function Member() {
         current_key: '',
         current_modifiers: [],
         current_color: '#121212',
+        current_song: '',
+        next_song: '',
         current_inear_targets: [],
         current_inear_vol: 0,
         song_trigger: 0
@@ -61,10 +63,20 @@ export default function Member() {
     useEffect(() => {
         if (state.song_trigger > 0) {
             setIsTransitioning(true);
-            const timer = setTimeout(() => setIsTransitioning(false), 7058);
+            const timer = setTimeout(() => {
+                setIsTransitioning(false);
+                // When transition finishes, move next_song to current_song if next_song exists
+                if (state.next_song) {
+                    setState(prev => ({
+                        ...prev,
+                        current_song: prev.next_song,
+                        next_song: ''
+                    }));
+                }
+            }, 7058);
             return () => clearTimeout(timer);
         }
-    }, [state.song_trigger]);
+    }, [state.song_trigger, state.next_song]);
 
     useEffect(() => {
         socket.on('connect', () => setIsConnected(true));
@@ -124,17 +136,27 @@ export default function Member() {
                 </div>
             )}
 
-            {state.current_song && (
-                <div className="member-song">
-                    <span className="member-song-label">SONG NO.</span>
-                    <span className="member-song-number">{state.current_song}</span>
+            <div style={{ display: 'flex', width: '90%', maxWidth: '600px', gap: '15px', marginBottom: '1rem' }}>
+                <div className="member-song" style={{ flex: 1, margin: 0, padding: '15px', borderRadius: '12px', background: '#222' }}>
+                    <span className="member-song-label" style={{ fontSize: '1rem', color: '#888' }}>현재 곡</span>
+                    <span className="member-song-number" style={{ fontSize: '3.5rem' }}>{state.current_song || '-'}</span>
                     {(songMap[state.current_song] || songMap[parseInt(state.current_song, 10)]) ? (
-                        <span style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', marginTop: '10px' }}>
+                        <span style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#fff', marginTop: '5px', textAlign: 'center' }}>
                             {songMap[state.current_song] || songMap[parseInt(state.current_song, 10)]}
                         </span>
                     ) : null}
                 </div>
-            )}
+                
+                <div className="member-song" style={{ flex: 1, margin: 0, padding: '15px', borderRadius: '12px', background: state.next_song ? '#3b82f633' : '#222', border: state.next_song ? '2px solid #3b82f6' : 'none' }}>
+                    <span className="member-song-label" style={{ fontSize: '1rem', color: '#888' }}>다음 곡</span>
+                    <span className="member-song-number" style={{ fontSize: '3.5rem', color: state.next_song ? '#3b82f6' : 'inherit' }}>{state.next_song || '-'}</span>
+                    {(songMap[state.next_song] || songMap[parseInt(state.next_song, 10)]) ? (
+                        <span style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#fff', marginTop: '5px', textAlign: 'center' }}>
+                            {songMap[state.next_song] || songMap[parseInt(state.next_song, 10)]}
+                        </span>
+                    ) : null}
+                </div>
+            </div>
 
             <div className="member-cues-container">
                 {displayKey && <div className="member-cue">{displayKey}</div>}
