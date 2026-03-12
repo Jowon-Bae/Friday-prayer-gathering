@@ -156,9 +156,9 @@ export default function Member() {
                     ) : null}
                 </div>
                 
-                <div className="member-song" style={{ flex: 1, margin: 0, padding: '15px', borderRadius: '12px', background: state.next_song ? '#3b82f633' : 'rgba(0, 0, 0, 0.4)', border: state.next_song ? '2px solid #3b82f6' : 'none' }}>
+                <div className="member-song" style={{ flex: 1, margin: 0, padding: '15px', borderRadius: '12px', background: 'rgba(0, 0, 0, 0.4)' }}>
                     <span className="member-song-label" style={{ fontSize: '1rem', color: '#888' }}>다음 곡</span>
-                    <span className="member-song-number" style={{ fontSize: '3.5rem', color: state.next_song ? '#3b82f6' : 'inherit' }}>{state.next_song || '-'}</span>
+                    <span className="member-song-number" style={{ fontSize: '3.5rem' }}>{state.next_song || '-'}</span>
                     {(songMap[state.next_song] || songMap[parseInt(state.next_song, 10)]) ? (
                         <span style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#fff', marginTop: '5px', textAlign: 'center' }}>
                             {songMap[state.next_song] || songMap[parseInt(state.next_song, 10)]}
