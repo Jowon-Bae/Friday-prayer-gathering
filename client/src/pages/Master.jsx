@@ -326,14 +326,18 @@ export default function Master() {
                         whiteSpace: 'pre-line'
                     }}
                     onClick={() => {
-                        socket.emit('update_state', { 
-                            song_trigger: Date.now(),
-                            current_song: nextSongNum || songNum,
-                            next_song: '' 
-                        });
-                        if (nextSongNum) {
-                            setSongNum(nextSongNum);
-                            setNextSongNum('');
+                        const ns = nextSongNum;
+                        socket.emit('update_state', { song_trigger: Date.now() });
+                        
+                        if (ns) {
+                            setTimeout(() => {
+                                socket.emit('update_state', { 
+                                    current_song: ns,
+                                    next_song: '' 
+                                });
+                                setSongNum(ns);
+                                setNextSongNum('');
+                            }, 7058);
                         }
                     }}
                 >

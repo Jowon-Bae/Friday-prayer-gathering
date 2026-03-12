@@ -65,18 +65,20 @@ export default function Member() {
             setIsTransitioning(true);
             const timer = setTimeout(() => {
                 setIsTransitioning(false);
-                // When transition finishes, move next_song to current_song if next_song exists
-                if (state.next_song) {
-                    setState(prev => ({
-                        ...prev,
-                        current_song: prev.next_song,
-                        next_song: ''
-                    }));
-                }
+                setState(prev => {
+                    if (prev.next_song) {
+                        return {
+                            ...prev,
+                            current_song: prev.next_song,
+                            next_song: ''
+                        };
+                    }
+                    return prev;
+                });
             }, 7058);
             return () => clearTimeout(timer);
         }
-    }, [state.song_trigger, state.next_song]);
+    }, [state.song_trigger]);
 
     useEffect(() => {
         socket.on('connect', () => setIsConnected(true));
