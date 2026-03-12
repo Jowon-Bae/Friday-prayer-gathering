@@ -180,6 +180,11 @@ export default function Master() {
                 >
                     GO
                 </button>
+                {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)] ? (
+                    <span style={{ fontSize: '1rem', fontWeight: 'bold', color: 'white', marginLeft: '5px' }}>
+                        {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)]}
+                    </span>
+                ) : null}
             </div>
             
             <div style={{ display: 'flex', gap: '20px', margin: '10px 0', width: '100%', justifyContent: 'center' }}>
