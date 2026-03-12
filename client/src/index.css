@@ -73,7 +73,7 @@ body {
 }
 
 .flash-transition h2 {
-  animation: flash-text-blink 0.857s cubic-bezier(0.4, 0, 0.6, 1) 4;
+  animation: flash-text-blink 0.882s cubic-bezier(0.4, 0, 0.6, 1) 8;
 }
 
 #root {

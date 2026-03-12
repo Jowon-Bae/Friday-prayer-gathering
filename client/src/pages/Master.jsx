@@ -163,21 +163,7 @@ export default function Master() {
                 >
                     GO
                 </button>
-                <button
-                    onClick={() => socket.emit('update_state', { song_trigger: Date.now() })}
-                    style={{
-                        padding: '6px 12px',
-                        backgroundColor: '#ef4444',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '6px',
-                        fontSize: '1rem',
-                        fontWeight: 'bold',
-                        cursor: 'pointer'
-                    }}
-                >
-                    다음 곡
-                </button>
+
                 {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)] ? (
                     <span style={{ fontSize: '1rem', fontWeight: 'bold', color: 'white', marginLeft: '5px' }}>
                         {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)]}
@@ -294,6 +280,20 @@ export default function Master() {
                         {mod.label}
                     </button>
                 ))}
+                
+                <button
+                    className={`cue-btn`}
+                    style={{
+                        backgroundColor: '#ef4444',
+                        opacity: 1,
+                        border: 'none',
+                        fontSize: '1.4rem',
+                        whiteSpace: 'pre-line'
+                    }}
+                    onClick={() => socket.emit('update_state', { song_trigger: Date.now() })}
+                >
+                    다음 곡
+                </button>
 
                 <div className="cue-divider"></div>
 

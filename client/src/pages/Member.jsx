@@ -61,7 +61,7 @@ export default function Member() {
     useEffect(() => {
         if (state.song_trigger > 0) {
             setIsTransitioning(true);
-            const timer = setTimeout(() => setIsTransitioning(false), 3430);
+            const timer = setTimeout(() => setIsTransitioning(false), 7058);
             return () => clearTimeout(timer);
         }
     }, [state.song_trigger]);
