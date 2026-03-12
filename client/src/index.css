@@ -72,7 +72,7 @@ body {
   pointer-events: none;
 }
 
-.flash-transition h1 {
+.flash-transition h2 {
   animation: flash-text-blink 0.857s cubic-bezier(0.4, 0, 0.6, 1) 4;
 }
 

@@ -132,8 +132,7 @@ export default function Master() {
         if (!inputSongNum) return;
         setSongNum(inputSongNum);
         socket.emit('update_state', {
-            current_song: inputSongNum,
-            song_trigger: Date.now()
+            current_song: inputSongNum
         });
     };
 
@@ -158,10 +157,26 @@ export default function Master() {
                         borderRadius: '6px',
                         fontSize: '1rem',
                         fontWeight: 'bold',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        marginRight: '8px'
                     }}
                 >
                     GO
+                </button>
+                <button
+                    onClick={() => socket.emit('update_state', { song_trigger: Date.now() })}
+                    style={{
+                        padding: '6px 12px',
+                        backgroundColor: '#ef4444',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '6px',
+                        fontSize: '1rem',
+                        fontWeight: 'bold',
+                        cursor: 'pointer'
+                    }}
+                >
+                    다음 곡
                 </button>
                 {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)] ? (
                     <span style={{ fontSize: '1rem', fontWeight: 'bold', color: 'white', marginLeft: '5px' }}>
