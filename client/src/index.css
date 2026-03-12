@@ -62,15 +62,18 @@ body {
   /* iOS Safari */
 }
 
-@keyframes flash-alert {
-  0% { background-color: white; }
-  50% { background-color: black; }
-  100% { background-color: white; }
+@keyframes flash-text-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0; transform: scale(0.95); }
 }
 
 .flash-transition {
-  animation: flash-alert 0.25s linear 8;
+  background-color: transparent;
   pointer-events: none;
+}
+
+.flash-transition h1 {
+  animation: flash-text-blink 0.857s cubic-bezier(0.4, 0, 0.6, 1) 4;
 }
 
 #root {
