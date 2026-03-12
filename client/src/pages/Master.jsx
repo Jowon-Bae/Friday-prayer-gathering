@@ -183,12 +183,12 @@ export default function Master() {
             </div>
             
             <div style={{ display: 'flex', gap: '20px', margin: '10px 0', width: '100%', justifyContent: 'center' }}>
-                <div style={{ flex: 1, backgroundColor: '#222', padding: '10px', borderRadius: '8px', textAlign: 'center' }}>
+                <div style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)', padding: '10px', borderRadius: '8px', textAlign: 'center' }}>
                     <div style={{ fontSize: '0.8rem', color: '#888', marginBottom: '5px' }}>현재 곡</div>
                     <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{songNum || '-'}</div>
                     <div style={{ fontSize: '0.9rem', color: '#aaa' }}>{songMap[songNum] || songMap[parseInt(songNum, 10)] || ''}</div>
                 </div>
-                <div style={{ flex: 1, backgroundColor: '#222', padding: '10px', borderRadius: '8px', textAlign: 'center' }}>
+                <div style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)', padding: '10px', borderRadius: '8px', textAlign: 'center' }}>
                     <div style={{ fontSize: '0.8rem', color: '#888', marginBottom: '5px' }}>다음 곡</div>
                     <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{nextSongNum || '-'}</div>
                     <div style={{ fontSize: '0.9rem', color: '#aaa' }}>{songMap[nextSongNum] || songMap[parseInt(nextSongNum, 10)] || ''}</div>
@@ -337,7 +337,7 @@ export default function Master() {
                                 });
                                 setSongNum(ns);
                                 setNextSongNum('');
-                            }, 7058);
+                            }, 5292); // 6th flash
                         }
                     }}
                 >

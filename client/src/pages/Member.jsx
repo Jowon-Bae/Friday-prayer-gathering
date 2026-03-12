@@ -63,8 +63,11 @@ export default function Member() {
     useEffect(() => {
         if (state.song_trigger > 0) {
             setIsTransitioning(true);
-            const timer = setTimeout(() => {
+            const transitionTimer = setTimeout(() => {
                 setIsTransitioning(false);
+            }, 7058);
+
+            const swapTimer = setTimeout(() => {
                 setState(prev => {
                     if (prev.next_song) {
                         return {
@@ -75,8 +78,12 @@ export default function Member() {
                     }
                     return prev;
                 });
-            }, 7058);
-            return () => clearTimeout(timer);
+            }, 5292); // swap at 6th flash
+
+            return () => {
+                clearTimeout(transitionTimer);
+                clearTimeout(swapTimer);
+            };
         }
     }, [state.song_trigger]);
 
@@ -139,7 +146,7 @@ export default function Member() {
             )}
 
             <div style={{ display: 'flex', width: '90%', maxWidth: '600px', gap: '15px', marginBottom: '1rem' }}>
-                <div className="member-song" style={{ flex: 1, margin: 0, padding: '15px', borderRadius: '12px', background: '#222' }}>
+                <div className="member-song" style={{ flex: 1, margin: 0, padding: '15px', borderRadius: '12px', background: 'rgba(0, 0, 0, 0.4)' }}>
                     <span className="member-song-label" style={{ fontSize: '1rem', color: '#888' }}>현재 곡</span>
                     <span className="member-song-number" style={{ fontSize: '3.5rem' }}>{state.current_song || '-'}</span>
                     {(songMap[state.current_song] || songMap[parseInt(state.current_song, 10)]) ? (
@@ -149,7 +156,7 @@ export default function Member() {
                     ) : null}
                 </div>
                 
-                <div className="member-song" style={{ flex: 1, margin: 0, padding: '15px', borderRadius: '12px', background: state.next_song ? '#3b82f633' : '#222', border: state.next_song ? '2px solid #3b82f6' : 'none' }}>
+                <div className="member-song" style={{ flex: 1, margin: 0, padding: '15px', borderRadius: '12px', background: state.next_song ? '#3b82f633' : 'rgba(0, 0, 0, 0.4)', border: state.next_song ? '2px solid #3b82f6' : 'none' }}>
                     <span className="member-song-label" style={{ fontSize: '1rem', color: '#888' }}>다음 곡</span>
                     <span className="member-song-number" style={{ fontSize: '3.5rem', color: state.next_song ? '#3b82f6' : 'inherit' }}>{state.next_song || '-'}</span>
                     {(songMap[state.next_song] || songMap[parseInt(state.next_song, 10)]) ? (
