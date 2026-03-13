@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { songMap } from '../utils/songMap';
 import ChatOverlay from '../components/ChatOverlay';
@@ -59,9 +59,11 @@ export default function Member() {
     });
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const prevTriggerRef = useRef(null);
 
     useEffect(() => {
-        if (state.song_trigger > 0) {
+        // Only trigger if this is a new value (greater than the last seen value) and not the initial payload
+        if (state.song_trigger && prevTriggerRef.current !== null && state.song_trigger > prevTriggerRef.current) {
             setIsTransitioning(true);
             const transitionTimer = setTimeout(() => {
                 setIsTransitioning(false);
@@ -84,6 +86,11 @@ export default function Member() {
                 clearTimeout(transitionTimer);
                 clearTimeout(swapTimer);
             };
+        }
+        
+        // Update the ref to the current trigger value after evaluating
+        if (state.song_trigger !== undefined) {
+            prevTriggerRef.current = state.song_trigger;
         }
     }, [state.song_trigger]);
 
