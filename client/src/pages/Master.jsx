@@ -20,7 +20,7 @@ const sections = [
     { id: 'V2', label: 'V2', color: 'var(--color-v2)' },
     { id: 'CH', label: 'Ch', color: 'var(--color-ch)' },
     { id: 'BR', label: 'Br', color: 'var(--color-br)' },
-    { id: 'INST', label: 'Inst.', color: 'var(--color-inst)' },
+    { id: 'INST', label: 'Intro', color: 'var(--color-inst)' },
     { id: 'END', label: 'Ending', color: 'var(--color-end)' }
 ];
 

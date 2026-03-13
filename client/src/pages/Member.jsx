@@ -18,7 +18,7 @@ const cueLabelMap = {
     'V2': 'Verse 2',
     'CH': 'Chorus',
     'BR': 'Bridge',
-    'INST': 'Instrument',
+    'INST': 'Intro',
     'END': 'Ending',
     'BR2': 'Bridge 한 번 더',
     'KA': 'A key',
