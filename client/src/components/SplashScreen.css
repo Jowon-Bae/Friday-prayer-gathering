@@ -4,13 +4,13 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: var(--bg-color, #121212);
+    background-color: var(--bg-color, #0A0A0F);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
     transition: opacity 0.5s ease-out;
-    color: white;
+    color: var(--text-primary);
 }
 
 .splash-fade {
@@ -42,17 +42,18 @@
   Must preserve invert(1) inside this filter sequence!
 */
 .splash-flash {
-    filter: invert(1) drop-shadow(0 0 40px rgba(255, 255, 255, 1)) brightness(2.5);
+    filter: invert(1) drop-shadow(0 0 40px rgba(201, 168, 76, 0.8)) brightness(1.5);
     transform: scale(1.1);
 }
 
 .splash-title {
     text-align: center;
-    font-size: 0.9rem;
-    /* Reduced to 60% of original 1.5rem size */
+    font-size: 1rem;
     letter-spacing: 2px;
     animation: fadeIn 1s ease-in forwards;
     opacity: 0;
+    color: var(--accent-gold-light);
+    line-height: 1.4;
 }
 
 @keyframes spinTwoTimes {

@@ -105,14 +105,12 @@ export default function InEar() {
                 {isConnected ? 'ONLINE' : 'OFFLINE'}
             </div>
 
-            <h1 style={{ textAlign: 'center', margin: '0 0 1rem 0', fontSize: '1.5rem' }}>인이어(In-Ear) 조정</h1>
+            <h1 className="serif-title" style={{ textAlign: 'center', margin: '0 0 1rem 0', fontSize: '1.6rem', color: 'var(--accent-gold-light)' }}>인이어(In-Ear) 조정</h1>
 
             {/* PREVIEW BOX */}
-            <div style={{
-                backgroundColor: memberState.current_color || '#121212',
-                border: '2px solid #666',
-                borderRadius: '8px',
-                padding: '0.5rem 1rem 1rem',
+            <div className="glass-panel" style={{
+                backgroundColor: memberState.current_color === '#121212' ? 'transparent' : memberState.current_color,
+                padding: '1.5rem 1rem 1rem',
                 marginBottom: '1.5rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -120,7 +118,7 @@ export default function InEar() {
                 position: 'relative',
                 minHeight: '150px'
             }}>
-                <div style={{ position: 'absolute', top: '-10px', left: '10px', backgroundColor: '#333', padding: '2px 8px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 'bold' }}>화면 미리보기</div>
+                <div style={{ position: 'absolute', top: '-10px', left: '10px', backgroundColor: 'var(--accent-gold-dark)', color: '#fff', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: '700', boxShadow: '0 4px 10px rgba(0,0,0,0.5)' }}>화면 미리보기</div>
 
                 {memberState.current_song && (
                     <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', opacity: 0.8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -143,29 +141,29 @@ export default function InEar() {
                 </div>
 
                 {(hasInEarTargets || hasInEarAdj) && (
-                    <div style={{ marginTop: '10px', backgroundColor: 'rgba(50,50,50,0.5)', width: '90%', padding: '10px', borderRadius: '8px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <div style={{ color: '#aaa', fontSize: '1.2rem', marginBottom: '8px', letterSpacing: '1px', fontWeight: 'bold' }}>IN-EAR CONTROL</div>
+                    <div className="glass-panel" style={{ marginTop: '15px', width: '92%', padding: '15px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <div style={{ color: 'var(--accent-gold)', fontSize: '1rem', marginBottom: '10px', letterSpacing: '0.15em', fontWeight: '800' }}>IN-EAR CONTROL</div>
 
                         {hasInEarTargets && (
                             <>
-                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '2px', color: 'white' }}>제 인이어에</div>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '2px' }}>
+                                <div style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '8px', color: 'var(--text-secondary)' }}>제 인이어에</div>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px' }}>
                                     {targets.map(tId => (
-                                        <div key={tId} style={{ backgroundColor: 'transparent', color: '#111', padding: '0', borderRadius: '4px', fontSize: '1.5rem', fontWeight: 'bold' }}>
+                                        <div key={tId} style={{ backgroundColor: 'var(--accent-gold-light)', color: '#000', padding: '4px 12px', borderRadius: '8px', fontSize: '1.3rem', fontWeight: '800' }}>
                                             {inearTargetMap[tId] || tId}
                                         </div>
                                     ))}
                                 </div>
-                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', marginTop: '2px', marginBottom: '5px', color: 'white' }}>소리를</div>
+                                <div style={{ fontSize: '1.1rem', fontWeight: '600', marginTop: '8px', marginBottom: '10px', color: 'var(--text-secondary)' }}>소리를</div>
                             </>
                         )}
 
                         {hasInEarAdj && (
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <div style={{ backgroundColor: 'transparent', color: vol > 0 ? '#d32f2f' : '#1976d2', padding: '0', borderRadius: '4px', fontSize: '2rem', fontWeight: 'bold', display: 'inline-block', marginBottom: '2px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5px' }}>
+                                <div style={{ color: vol > 0 ? '#ef4444' : '#3b82f6', padding: '0', fontSize: '2.2rem', fontWeight: '900', display: 'inline-block', marginBottom: '4px', lineHeight: 1 }}>
                                     {vol > 0 ? `+${vol}` : vol}
                                 </div>
-                                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'white' }}>
+                                <div style={{ fontSize: '1.2rem', fontWeight: '700', color: 'var(--text-primary)' }}>
                                     {vol > 0 ? '올려주세요' : '내려주세요'}
                                 </div>
                             </div>
@@ -178,11 +176,10 @@ export default function InEar() {
                 {inearTargets.map(t => (
                     <button
                         key={t.id}
-                        className="cue-btn"
+                        className={`cue-btn ${targets.includes(t.id) ? 'active' : ''}`}
                         style={{
-                            backgroundColor: t.color,
-                            opacity: targets.includes(t.id) ? 1 : 0.6,
-                            border: targets.includes(t.id) ? '4px solid white' : 'none',
+                            backgroundColor: targets.includes(t.id) ? t.color : 'rgba(20, 20, 32, 0.5)',
+                            color: targets.includes(t.id) ? '#fff' : t.color,
                             fontSize: '1.3rem'
                         }}
                         onClick={() => toggleTarget(t.id)}
@@ -195,12 +192,12 @@ export default function InEar() {
 
                 <div style={{ display: 'flex', gap: '1rem', gridColumn: '1 / -1' }}>
                     <button
-                        className="cue-btn"
+                        className={`cue-btn ${vol > 0 ? 'active' : ''}`}
                         style={{
                             flex: 1,
-                            backgroundColor: '#d32f2f',
-                            opacity: vol > 0 ? 1 : 0.6,
-                            border: vol > 0 ? '4px solid white' : 'none',
+                            backgroundColor: vol > 0 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(20, 20, 32, 0.5)',
+                            color: '#ef4444',
+                            border: vol > 0 ? '1px solid rgba(239, 68, 68, 0.8)' : '1px solid rgba(255,255,255,0.05)',
                             fontSize: '2rem',
                             fontWeight: 'bold'
                         }}
@@ -209,12 +206,12 @@ export default function InEar() {
                         +1
                     </button>
                     <button
-                        className="cue-btn"
+                        className={`cue-btn ${vol < 0 ? 'active' : ''}`}
                         style={{
                             flex: 1,
-                            backgroundColor: '#1976d2',
-                            opacity: vol < 0 ? 1 : 0.6,
-                            border: vol < 0 ? '4px solid white' : 'none',
+                            backgroundColor: vol < 0 ? 'rgba(59, 130, 246, 0.2)' : 'rgba(20, 20, 32, 0.5)',
+                            color: '#3b82f6',
+                            border: vol < 0 ? '1px solid rgba(59, 130, 246, 0.8)' : '1px solid rgba(255,255,255,0.05)',
                             fontSize: '2rem',
                             fontWeight: 'bold'
                         }}
@@ -227,15 +224,15 @@ export default function InEar() {
 
             <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', marginBottom: '2rem' }}>
                 <button
-                    className="cue-btn"
-                    style={{ flex: 1, backgroundColor: '#444', fontSize: '1.2rem', padding: '1rem' }}
+                    className="premium-btn"
+                    style={{ flex: 1, background: 'linear-gradient(135deg, #5A5560 0%, #333 100%)', fontSize: '1.1rem', padding: '1rem' }}
                     onClick={clearInEar}
                 >
                     지우기 (CLEAR)
                 </button>
                 <button
-                    className="cue-btn"
-                    style={{ flex: 1, backgroundColor: '#2a2a2a', fontSize: '1.2rem', padding: '1rem', border: '2px solid #555' }}
+                    className="premium-btn-outline"
+                    style={{ flex: 1, fontSize: '1.1rem', padding: '1rem' }}
                     onClick={handleReturn}
                 >
                     ← 마스터 복귀

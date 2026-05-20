@@ -28,10 +28,10 @@ function Home() {
     return (
         <div className="home-container">
             <img src="/logo_inverted.png" alt="App Icon" className="home-logo" />
-            <h1>Seouldream Church<br />금요기도집회 예배팀<br />Cue System</h1>
+            <h1 className="serif-title">Seouldream Church<br />금요기도집회 예배팀<br />Cue System</h1>
             <div className="home-links">
-                <Link to="/master" className="home-btn master-btn">Master Mode (인도자)</Link>
-                <Link to="/member" className="home-btn member-btn">Member Mode (팀원)</Link>
+                <Link to="/master" className="home-btn premium-btn">Master Mode (인도자)</Link>
+                <Link to="/member" className="home-btn premium-btn-outline">Member Mode (팀원)</Link>
             </div>
         </div>
     );

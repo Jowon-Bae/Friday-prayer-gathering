@@ -155,6 +155,7 @@ export default function Master() {
 
     return (
         <div className="master-container" style={{ paddingTop: 'max(50px, env(safe-area-inset-top))' }}>
+            <div className="header-top-bar"></div>
             <div className="song-control">
                 <span className="song-label" style={{ fontSize: '1rem' }}>Song No.</span>
                 <input
@@ -166,17 +167,8 @@ export default function Master() {
                 />
                 <button
                     onClick={handleGoClick}
-                    style={{
-                        padding: '6px 12px',
-                        backgroundColor: '#3b82f6',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '6px',
-                        fontSize: '1rem',
-                        fontWeight: 'bold',
-                        cursor: 'pointer',
-                        marginRight: '8px'
-                    }}
+                    className="premium-btn"
+                    style={{ padding: '6px 16px', marginRight: '8px' }}
                 >
                     GO
                 </button>
@@ -187,15 +179,15 @@ export default function Master() {
                 ) : null}
             </div>
             
-            <div style={{ display: 'flex', gap: '20px', margin: '10px 0', width: '100%', justifyContent: 'center' }}>
-                <div style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)', padding: '10px', borderRadius: '8px', textAlign: 'center' }}>
-                    <div style={{ fontSize: '0.8rem', color: '#888', marginBottom: '5px' }}>현재 곡</div>
-                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{songNum || '-'}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#aaa' }}>{songMap[songNum] || songMap[parseInt(songNum, 10)] || ''}</div>
+            <div style={{ display: 'flex', gap: '15px', margin: '15px 10px', width: 'auto', justifyContent: 'center' }}>
+                <div className="glass-panel" style={{ flex: 1, padding: '12px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', marginBottom: '5px', fontWeight: '600' }}>현재 곡</div>
+                    <div className="inter-num" style={{ fontSize: '1.4rem', fontWeight: '800' }}>{songNum || '-'}</div>
+                    <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{songMap[songNum] || songMap[parseInt(songNum, 10)] || ''}</div>
                 </div>
-                <div style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)', padding: '10px', borderRadius: '8px', textAlign: 'center' }}>
-                    <div style={{ fontSize: '0.8rem', color: '#888', marginBottom: '5px' }}>다음 곡</div>
-                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{nextSongNum || '-'}</div>
+                <div className="glass-panel" style={{ flex: 1, padding: '12px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--accent-gold)', marginBottom: '5px', fontWeight: '600' }}>다음 곡</div>
+                    <div className="inter-num" style={{ fontSize: '1.4rem', fontWeight: '800' }}>{nextSongNum || '-'}</div>
                     <div style={{ fontSize: '0.9rem', color: '#aaa' }}>{songMap[nextSongNum] || songMap[parseInt(nextSongNum, 10)] || ''}</div>
                     {nextSongNum && (
                         <button
@@ -240,12 +232,12 @@ export default function Master() {
                         style={{
                             marginTop: '4px',
                             padding: '4px 12px',
-                            background: isPlaying ? '#dc2626' : '#16a34a',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                            fontWeight: 'bold',
-                            fontSize: '0.9rem',
+                            background: isPlaying ? 'rgba(239, 68, 68, 0.2)' : 'rgba(22, 163, 74, 0.2)',
+                            color: isPlaying ? '#ef4444' : '#4ade80',
+                            border: `1px solid ${isPlaying ? 'rgba(239, 68, 68, 0.5)' : 'rgba(22, 163, 74, 0.5)'}`,
+                            borderRadius: '8px',
+                            fontWeight: '700',
+                            fontSize: '0.85rem',
                             cursor: 'pointer'
                         }}
                     >
@@ -269,13 +261,10 @@ export default function Master() {
                 {keyCues.map(kCue => (
                     <button
                         key={kCue.id}
-                        className={`cue-btn`}
+                        className={`cue-btn ${activeKey === kCue.id ? 'active' : ''}`}
                         style={{
-                            backgroundColor: kCue.color,
-                            opacity: activeKey === kCue.id ? 1 : 0.6,
-                            border: activeKey === kCue.id ? '4px solid white' : 'none',
-                            fontSize: '1.4rem',
-                            whiteSpace: 'pre-line'
+                            backgroundColor: activeKey === kCue.id ? kCue.color : 'rgba(20, 20, 32, 0.5)',
+                            color: activeKey === kCue.id ? '#fff' : kCue.color
                         }}
                         onClick={() => selectKey(kCue.id)}
                     >
@@ -288,13 +277,10 @@ export default function Master() {
                 {sections.map(sec => (
                     <button
                         key={sec.id}
-                        className={`cue-btn cue-${sec.id.toLowerCase()}`}
+                        className={`cue-btn cue-${sec.id.toLowerCase()} ${activeSection === sec.id ? 'active' : ''}`}
                         style={{
-                            backgroundColor: sec.color,
-                            opacity: activeSection === sec.id ? 1 : 0.6,
-                            border: activeSection === sec.id ? '4px solid white' : 'none',
-                            fontSize: '1.4rem',
-                            whiteSpace: 'pre-line'
+                            backgroundColor: activeSection === sec.id ? sec.color : 'rgba(20, 20, 32, 0.5)',
+                            color: activeSection === sec.id ? '#fff' : sec.color
                         }}
                         onClick={() => selectSection(sec.id, sec.color)}
                     >
@@ -307,13 +293,10 @@ export default function Master() {
                 {modifiers.map(mod => (
                     <button
                         key={mod.id}
-                        className={`cue-btn`}
+                        className={`cue-btn ${activeModifiers.includes(mod.id) ? 'active' : ''}`}
                         style={{
-                            backgroundColor: mod.color,
-                            opacity: activeModifiers.includes(mod.id) ? 1 : 0.6,
-                            border: activeModifiers.includes(mod.id) ? '4px solid white' : 'none',
-                            fontSize: '1.4rem',
-                            whiteSpace: 'pre-line'
+                            backgroundColor: activeModifiers.includes(mod.id) ? mod.color : 'rgba(20, 20, 32, 0.5)',
+                            color: activeModifiers.includes(mod.id) ? '#fff' : mod.color
                         }}
                         onClick={() => toggleModifier(mod.id)}
                     >
@@ -324,11 +307,10 @@ export default function Master() {
                 <button
                     className={`cue-btn`}
                     style={{
-                        backgroundColor: '#ef4444',
-                        opacity: 1,
+                        background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)',
+                        color: 'white',
                         border: 'none',
-                        fontSize: '1.4rem',
-                        whiteSpace: 'pre-line'
+                        boxShadow: '0 4px 15px rgba(239, 68, 68, 0.3)'
                     }}
                     onClick={() => {
                         const ns = nextSongNum;
@@ -351,15 +333,13 @@ export default function Master() {
 
                 <div className="cue-divider"></div>
 
-                <div style={{ gridColumn: '1 / -1', marginTop: '5px' }}>
+                <div style={{ gridColumn: '1 / -1', marginTop: '10px' }}>
                     <button
-                        className="cue-btn"
+                        className="premium-btn-outline"
                         style={{
-                            backgroundColor: '#2a2a2a',
                             width: '100%',
-                            fontSize: '1.2rem',
-                            padding: '0.5rem',
-                            border: '2px solid #444',
+                            fontSize: '1rem',
+                            padding: '12px',
                         }}
                         onClick={() => navigate('/inear')}
                     >
