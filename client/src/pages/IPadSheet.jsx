@@ -3,6 +3,7 @@ import { io } from 'socket.io-client';
 import { songMap } from '../utils/songMap';
 import ChatOverlay from '../components/ChatOverlay';
 import { Rnd } from 'react-rnd';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 const isCloudflare = window.location.hostname.includes('trycloudflare.com');
 const serverUrl = import.meta.env.PROD ? '' : (isCloudflare
@@ -143,12 +144,21 @@ export default function IPadSheet() {
 
             {/* MAIN SHEET MUSIC AREA */}
             {imageUrl ? (
-                <img 
-                    src={imageUrl} 
-                    alt={`Sheet Music for Song ${activeSong}`} 
-                    style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right' }}
-                    onError={() => setImgError(true)}
-                />
+                <TransformWrapper 
+                    initialScale={1} 
+                    centerOnInit={false}
+                    doubleClick={{ disabled: false }}
+                    pinch={{ step: 5 }}
+                >
+                    <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
+                        <img 
+                            src={imageUrl} 
+                            alt={`Sheet Music for Song ${activeSong}`} 
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right' }}
+                            onError={() => setImgError(true)}
+                        />
+                    </TransformComponent>
+                </TransformWrapper>
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
                     <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📄</div>
