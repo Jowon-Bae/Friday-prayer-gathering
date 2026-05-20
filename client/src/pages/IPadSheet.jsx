@@ -138,15 +138,15 @@ export default function IPadSheet() {
                 </div>
             )}
 
-            {/* RIGHT SIDEBAR WRAPPER */}
+            {/* LEFT SIDEBAR WRAPPER */}
             <div style={{
                 position: 'absolute',
                 bottom: '20px',
-                right: '20px',
-                width: '300px',
+                left: '20px',
+                width: '350px',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'flex-end',
+                alignItems: 'flex-start',
                 zIndex: 5
             }}>
                 {/* FLASH TRANSITION TEXT (Above the box) */}
@@ -159,9 +159,10 @@ export default function IPadSheet() {
                         width: '100%',
                         textAlign: 'center',
                         boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
-                        border: '1px solid rgba(255,100,100,0.5)'
+                        border: '1px solid rgba(255,100,100,0.5)',
+                        animation: 'bpm-blink 0.5s infinite alternate'
                     }}>
-                        <div style={{ fontSize: '1.3rem', fontWeight: '900', color: 'white', lineHeight: 1.3, textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>
+                        <div style={{ fontSize: '1.5rem', fontWeight: '900', color: 'white', lineHeight: 1.3, textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>
                             다음 곡으로<br/>넘어가겠습니다!
                         </div>
                     </div>
@@ -179,32 +180,32 @@ export default function IPadSheet() {
                     width: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'flex-end',
+                    alignItems: 'flex-start',
                 }}>
-                    <div style={{ fontSize: '0.9rem', color: '#888', fontWeight: 'bold', marginBottom: '2px' }}>현재 곡</div>
-                    <div style={{ fontSize: '2rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{activeSong || '-'}</div>
-                    <div style={{ fontSize: '1rem', color: '#ccc', marginBottom: '15px', textAlign: 'right' }}>{songMap[activeSong] || songMap[parseInt(activeSong, 10)] || ''}</div>
-
-                    <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '10px' }}></div>
-
-                    <div style={{ fontSize: '0.9rem', color: '#888', fontWeight: 'bold', marginBottom: '2px' }}>다음 곡</div>
-                    <div style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#aaa', lineHeight: 1 }}>{state.next_song || '-'}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#888', marginBottom: '15px', textAlign: 'right' }}>{songMap[state.next_song] || songMap[parseInt(state.next_song, 10)] || ''}</div>
+                    <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>현재 곡</div>
+                    <div style={{ fontSize: '4rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{activeSong || '-'}</div>
+                    <div style={{ fontSize: '2rem', color: '#ccc', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[activeSong] || songMap[parseInt(activeSong, 10)] || ''}</div>
 
                     <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '15px' }}></div>
 
-                    {displayKey && <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#fff', backgroundColor: 'rgba(255,255,255,0.2)', padding: '4px 12px', borderRadius: '8px', marginBottom: '10px' }}>{displayKey}</div>}
-                    {displayCue && <div style={{ fontSize: '3rem', fontWeight: '900', color: '#3b82f6', textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '10px' }}>{displayCue}</div>}
+                    <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>다음 곡</div>
+                    <div style={{ fontSize: '2.8rem', fontWeight: 'bold', color: '#aaa', lineHeight: 1 }}>{state.next_song || '-'}</div>
+                    <div style={{ fontSize: '1.8rem', color: '#888', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[state.next_song] || songMap[parseInt(state.next_song, 10)] || ''}</div>
+
+                    <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '20px' }}></div>
+
+                    {displayKey && <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', backgroundColor: 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '10px', marginBottom: '12px' }}>{displayKey}</div>}
+                    {displayCue && <div style={{ fontSize: '3.5rem', fontWeight: '900', color: '#3b82f6', textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '12px' }}>{displayCue}</div>}
                     
                     {hasModifiers && state.current_modifiers.map(mod => (
-                        <div key={mod} className="member-cue text-outline-black" style={{ fontSize: '2rem', color: '#eab308', marginBottom: '5px' }}>
+                        <div key={mod} className="member-cue text-outline-black" style={{ fontSize: '2.2rem', color: '#eab308', marginBottom: '8px' }}>
                             {modifierLabelMap[mod] || mod}
                         </div>
                     ))}
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
-                        <span style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold' }}>BPM</span>
-                        <span style={state.is_playing ? { fontSize: '2.5rem', fontWeight: '900', color: '#fff', animation: `bpm-blink ${60 / state.current_bpm}s infinite` } : { fontSize: '2.5rem', fontWeight: '900', color: '#fff' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginTop: '15px' }}>
+                        <span style={{ fontSize: '1.2rem', color: '#888', fontWeight: 'bold' }}>BPM</span>
+                        <span style={state.is_playing ? { fontSize: '3rem', fontWeight: '900', color: '#fff', animation: `bpm-blink ${60 / state.current_bpm}s infinite` } : { fontSize: '3rem', fontWeight: '900', color: '#fff' }}>
                             {state.current_bpm}
                         </span>
                     </div>
