@@ -155,6 +155,7 @@ export default function IPadSheet() {
                         <img 
                             src={imageUrl} 
                             alt={`Sheet Music for Song ${activeSong}`} 
+                            className="sheet-fade-in"
                             style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right' }}
                             onError={() => setImgError(true)}
                         />
