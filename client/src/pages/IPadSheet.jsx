@@ -62,10 +62,11 @@ export default function IPadSheet() {
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [imgError, setImgError] = useState(false);
-    const prevTriggerRef = useRef(null);
+    const prevTriggerRef = useRef(0);
+    const hasReceivedInitialState = useRef(false);
 
     useEffect(() => {
-        if (state.song_trigger && prevTriggerRef.current !== null && state.song_trigger > prevTriggerRef.current) {
+        if (state.song_trigger && state.song_trigger > prevTriggerRef.current) {
             setIsTransitioning(true);
             const transitionTimer = setTimeout(() => {
                 setIsTransitioning(false);
@@ -104,7 +105,15 @@ export default function IPadSheet() {
         socket.on('connect', () => setIsConnected(true));
         socket.on('disconnect', () => setIsConnected(false));
         socket.on('state_update', (newState) => {
-            setState(prev => ({ ...prev, ...newState }));
+            setState(prev => {
+                if (!hasReceivedInitialState.current) {
+                    hasReceivedInitialState.current = true;
+                    if (newState.song_trigger) {
+                        prevTriggerRef.current = newState.song_trigger;
+                    }
+                }
+                return { ...prev, ...newState };
+            });
         });
 
         return () => {
