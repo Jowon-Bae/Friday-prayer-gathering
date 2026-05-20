@@ -179,7 +179,7 @@ export default function IPadSheet() {
             <Rnd
                 default={{
                     x: 20,
-                    y: 120,
+                    y: 160,
                     width: 350,
                     height: 'auto',
                 }}
