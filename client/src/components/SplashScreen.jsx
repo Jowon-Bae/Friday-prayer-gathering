@@ -41,7 +41,7 @@ export default function SplashScreen({ onComplete }) {
                     alt="App Logo"
                     className={`splash-logo ${stage === 'flashing' ? 'splash-flash' : ''}`}
                 />
-                <h2 className="splash-title serif-title">Seouldream Church<br />금요기도집회 예배팀<br />Cue System</h2>
+                <h2 className="splash-title">Seouldream Church<br />금요기도집회 예배팀<br />Cue System</h2>
             </div>
         </div>
     );

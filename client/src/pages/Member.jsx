@@ -130,7 +130,7 @@ export default function Member() {
         <div
             className="member-container"
             style={{
-                backgroundColor: state.current_color === '#121212' ? 'var(--bg-color)' : state.current_color,
+                backgroundColor: state.current_color,
                 paddingBottom: 'max(30px, env(safe-area-inset-bottom))',
                 paddingTop: 'max(60px, env(safe-area-inset-top))'
             }}
@@ -152,22 +152,22 @@ export default function Member() {
                 </div>
             )}
 
-            <div className="member-song-wrapper">
-                <div className="member-song glass-panel">
-                    <span className="member-song-label">현재 곡</span>
-                    <span className="member-song-number">{state.current_song || '-'}</span>
+            <div style={{ display: 'flex', width: '90%', maxWidth: '600px', gap: '15px', marginBottom: '1rem' }}>
+                <div className="member-song" style={{ flex: 1, margin: 0, padding: '15px', borderRadius: '12px', background: 'rgba(0, 0, 0, 0.4)' }}>
+                    <span className="member-song-label" style={{ fontSize: '1rem', color: '#888' }}>현재 곡</span>
+                    <span className="member-song-number" style={{ fontSize: '3.5rem' }}>{state.current_song || '-'}</span>
                     {(songMap[state.current_song] || songMap[parseInt(state.current_song, 10)]) ? (
-                        <span className="member-song-title">
+                        <span style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#fff', marginTop: '5px', textAlign: 'center' }}>
                             {songMap[state.current_song] || songMap[parseInt(state.current_song, 10)]}
                         </span>
                     ) : null}
                 </div>
                 
-                <div className="member-song glass-panel">
-                    <span className="member-song-label">다음 곡</span>
-                    <span className="member-song-number">{state.next_song || '-'}</span>
+                <div className="member-song" style={{ flex: 1, margin: 0, padding: '15px', borderRadius: '12px', background: 'rgba(0, 0, 0, 0.4)' }}>
+                    <span className="member-song-label" style={{ fontSize: '1rem', color: '#888' }}>다음 곡</span>
+                    <span className="member-song-number" style={{ fontSize: '3.5rem' }}>{state.next_song || '-'}</span>
                     {(songMap[state.next_song] || songMap[parseInt(state.next_song, 10)]) ? (
-                        <span className="member-song-title">
+                        <span style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#fff', marginTop: '5px', textAlign: 'center' }}>
                             {songMap[state.next_song] || songMap[parseInt(state.next_song, 10)]}
                         </span>
                     ) : null}
@@ -184,29 +184,29 @@ export default function Member() {
             </div>
 
             {(hasInEarTargets || hasInEarAdj) && (
-                <div className="member-cues-container glass-panel" style={{ marginTop: '0.5rem', minHeight: 'auto', paddingTop: '1rem', paddingBottom: '1rem', width: '92%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div style={{ color: 'var(--accent-gold)', fontSize: '1rem', marginBottom: '1rem', letterSpacing: '0.2em', fontWeight: '800' }}>IN-EAR CONTROL</div>
+                <div className="member-cues-container" style={{ marginTop: '0.5rem', backgroundColor: 'rgba(50,50,50,0.5)', borderColor: '#555', minHeight: 'auto', paddingTop: '0.5rem', paddingBottom: '0.5rem', width: '90%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{ color: '#aaa', fontSize: '1.2rem', marginBottom: '0.5rem', letterSpacing: '2px', fontWeight: 'bold' }}>IN-EAR CONTROL</div>
 
                     {hasInEarTargets && (
                         <>
-                            <div style={{ fontSize: '1.2rem', fontWeight: '600', marginBottom: '8px', color: 'var(--text-secondary)' }}>제 인이어에</div>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px' }}>
+                            <div style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '2px', color: 'white' }}>제 인이어에</div>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '2px' }}>
                                 {state.current_inear_targets.map(tId => (
-                                    <div key={tId} style={{ backgroundColor: 'var(--accent-gold-light)', color: '#000', fontSize: '1.5rem', padding: '6px 16px', borderRadius: '12px', fontWeight: '800', margin: '0' }}>
+                                    <div key={tId} className="member-cue" style={{ backgroundColor: 'transparent', color: '#111', fontSize: '2rem', padding: '0 0.5rem', margin: '0' }}>
                                         {inearTargetMap[tId] || tId}
                                     </div>
                                 ))}
                             </div>
-                            <div style={{ fontSize: '1.2rem', fontWeight: '600', marginTop: '8px', marginBottom: '8px', color: 'var(--text-secondary)' }}>소리를</div>
+                            <div style={{ fontSize: '1.2rem', fontWeight: 'bold', marginTop: '2px', marginBottom: '2px', color: 'white' }}>소리를</div>
                         </>
                     )}
 
                     {hasInEarAdj && (
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px' }}>
-                            <div style={{ color: state.current_inear_vol > 0 ? '#ef4444' : '#3b82f6', fontSize: '3rem', fontWeight: '900', padding: '0 0.5rem', margin: '0 0 4px 0', lineHeight: 1 }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <div className="member-cue" style={{ backgroundColor: 'transparent', color: state.current_inear_vol > 0 ? '#d32f2f' : '#1976d2', fontSize: '2.5rem', padding: '0 0.5rem', margin: '0 0 2px 0' }}>
                                 {state.current_inear_vol > 0 ? `+${state.current_inear_vol}` : state.current_inear_vol}
                             </div>
-                            <div style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+                            <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: 'white' }}>
                                 {state.current_inear_vol > 0 ? '올려주세요' : '내려주세요'}
                             </div>
                         </div>
