@@ -422,5 +422,5 @@ body {
 }
 
 .sheet-fade-in {
-  animation: sheet-fade-in 1s ease-out forwards;
+  animation: sheet-fade-in 1.5s ease-out forwards;
 }
