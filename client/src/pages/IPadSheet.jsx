@@ -126,7 +126,7 @@ export default function IPadSheet() {
                 <img 
                     src={imageUrl} 
                     alt={`Sheet Music for Song ${activeSong}`} 
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right' }}
                     onError={() => setImgError(true)}
                 />
             ) : (
@@ -138,55 +138,78 @@ export default function IPadSheet() {
                 </div>
             )}
 
-            {/* FLOATING CUE WIDGET */}
+            {/* RIGHT SIDEBAR WRAPPER */}
             <div style={{
                 position: 'absolute',
                 bottom: '20px',
                 right: '20px',
-                backgroundColor: 'rgba(20, 20, 20, 0.8)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                padding: '1.5rem',
-                borderRadius: '20px',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-                border: '1px solid rgba(255,255,255,0.1)',
+                width: '300px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-end',
-                minWidth: '220px',
                 zIndex: 5
             }}>
-                <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '5px' }}>현재 곡</div>
-                <div style={{ fontSize: '2rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{activeSong || '-'}</div>
-                <div style={{ fontSize: '1rem', color: '#ccc', marginBottom: '15px' }}>{songMap[activeSong] || songMap[parseInt(activeSong, 10)] || ''}</div>
-
-                <div style={{ height: '2px', width: '100%', backgroundColor: 'rgba(255,255,255,0.1)', marginBottom: '15px' }}></div>
-
-                {displayKey && <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#fff', backgroundColor: 'rgba(255,255,255,0.2)', padding: '4px 12px', borderRadius: '8px', marginBottom: '10px' }}>{displayKey}</div>}
-                {displayCue && <div style={{ fontSize: '3rem', fontWeight: '900', color: '#3b82f6', textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '10px' }}>{displayCue}</div>}
-                
-                {hasModifiers && state.current_modifiers.map(mod => (
-                    <div key={mod} className="member-cue text-outline-black" style={{ fontSize: '2rem', color: '#eab308', marginBottom: '5px' }}>
-                        {modifierLabelMap[mod] || mod}
+                {/* FLASH TRANSITION TEXT (Above the box) */}
+                {isTransitioning && (
+                    <div className="flash-transition" style={{ 
+                        backgroundColor: 'rgba(220, 38, 38, 0.9)', 
+                        padding: '12px 15px', 
+                        borderRadius: '12px',
+                        marginBottom: '15px',
+                        width: '100%',
+                        textAlign: 'center',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
+                        border: '1px solid rgba(255,100,100,0.5)'
+                    }}>
+                        <div style={{ fontSize: '1.3rem', fontWeight: '900', color: 'white', lineHeight: 1.3, textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>
+                            다음 곡으로<br/>넘어가겠습니다!
+                        </div>
                     </div>
-                ))}
+                )}
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
-                    <span style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold' }}>BPM</span>
-                    <span style={state.is_playing ? { fontSize: '2.5rem', fontWeight: '900', color: '#fff', animation: `bpm-blink ${60 / state.current_bpm}s infinite` } : { fontSize: '2.5rem', fontWeight: '900', color: '#fff' }}>
-                        {state.current_bpm}
-                    </span>
+                {/* FLOATING CUE WIDGET */}
+                <div style={{
+                    backgroundColor: 'rgba(20, 20, 20, 0.85)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    padding: '1.5rem',
+                    borderRadius: '20px',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                }}>
+                    <div style={{ fontSize: '0.9rem', color: '#888', fontWeight: 'bold', marginBottom: '2px' }}>현재 곡</div>
+                    <div style={{ fontSize: '2rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{activeSong || '-'}</div>
+                    <div style={{ fontSize: '1rem', color: '#ccc', marginBottom: '15px', textAlign: 'right' }}>{songMap[activeSong] || songMap[parseInt(activeSong, 10)] || ''}</div>
+
+                    <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '10px' }}></div>
+
+                    <div style={{ fontSize: '0.9rem', color: '#888', fontWeight: 'bold', marginBottom: '2px' }}>다음 곡</div>
+                    <div style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#aaa', lineHeight: 1 }}>{state.next_song || '-'}</div>
+                    <div style={{ fontSize: '0.9rem', color: '#888', marginBottom: '15px', textAlign: 'right' }}>{songMap[state.next_song] || songMap[parseInt(state.next_song, 10)] || ''}</div>
+
+                    <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '15px' }}></div>
+
+                    {displayKey && <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#fff', backgroundColor: 'rgba(255,255,255,0.2)', padding: '4px 12px', borderRadius: '8px', marginBottom: '10px' }}>{displayKey}</div>}
+                    {displayCue && <div style={{ fontSize: '3rem', fontWeight: '900', color: '#3b82f6', textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '10px' }}>{displayCue}</div>}
+                    
+                    {hasModifiers && state.current_modifiers.map(mod => (
+                        <div key={mod} className="member-cue text-outline-black" style={{ fontSize: '2rem', color: '#eab308', marginBottom: '5px' }}>
+                            {modifierLabelMap[mod] || mod}
+                        </div>
+                    ))}
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+                        <span style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold' }}>BPM</span>
+                        <span style={state.is_playing ? { fontSize: '2.5rem', fontWeight: '900', color: '#fff', animation: `bpm-blink ${60 / state.current_bpm}s infinite` } : { fontSize: '2.5rem', fontWeight: '900', color: '#fff' }}>
+                            {state.current_bpm}
+                        </span>
+                    </div>
                 </div>
             </div>
-
-            {/* FLASH TRANSITION */}
-            {isTransitioning && (
-                <div className="flash-transition" style={{ position: 'absolute', inset: 0, backgroundColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, pointerEvents: 'none' }}>
-                    <h2 style={{ fontSize: '6vw', fontWeight: '900', color: 'white', textAlign: 'center', lineHeight: 1.3, textShadow: '2px 2px 4px black, -2px -2px 4px black, 2px -2px 4px black, -2px 2px 4px black' }}>
-                        다음 곡으로<br/>넘어가겠습니다!
-                    </h2>
-                </div>
-            )}
 
             <ChatOverlay socket={socket} role="아이패드(iPad)" />
         </div>
