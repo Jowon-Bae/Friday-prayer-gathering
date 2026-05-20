@@ -31,6 +31,20 @@ const cueLabelMap = {
     'KG': 'G key'
 };
 
+const inearTargetMap = {
+    'WL': '예배인도자',
+    'CLICK': '클릭',
+    'SINGER': '싱어',
+    'PRAY': '기도인도자',
+    'PREACH': '설교자',
+    'KEYMAIN': '메인 건반',
+    'KEY21': '세컨1 건반',
+    'KEY22': '세컨2 건반',
+    'DRUM': '드럼',
+    'BASS': '베이스',
+    'ELEC': '일렉'
+};
+
 export default function IPadSheet() {
     const [state, setState] = useState({
         current_bpm: 70,
@@ -40,7 +54,9 @@ export default function IPadSheet() {
         current_color: '#121212',
         current_song: '',
         next_song: '',
-        song_trigger: 0
+        song_trigger: 0,
+        current_inear_targets: [],
+        current_inear_vol: 0
     });
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -114,6 +130,8 @@ export default function IPadSheet() {
     };
 
     const hasModifiers = state.current_modifiers && state.current_modifiers.length > 0;
+    const hasInEarTargets = state.current_inear_targets && state.current_inear_targets.length > 0;
+    const hasInEarAdj = state.current_inear_vol !== 0 && state.current_inear_vol !== undefined;
     const imageUrl = activeSong && !imgError ? `/sheets/${activeSong}.jpg` : null;
 
     return (
@@ -229,6 +247,37 @@ export default function IPadSheet() {
                                 {state.current_bpm}
                             </span>
                         </div>
+
+                        {(hasInEarTargets || hasInEarAdj) && (
+                            <div className="member-cues-container" style={{ marginTop: '20px', backgroundColor: 'rgba(50,50,50,0.5)', borderRadius: '15px', border: '1px solid #555', padding: '15px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div style={{ color: '#aaa', fontSize: '1rem', marginBottom: '10px', letterSpacing: '2px', fontWeight: 'bold' }}>IN-EAR CONTROL</div>
+
+                                {hasInEarTargets && (
+                                    <>
+                                        <div style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '4px', color: 'white' }}>제 인이어에</div>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '4px' }}>
+                                            {state.current_inear_targets.map(tId => (
+                                                <div key={tId} className="member-cue" style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', fontSize: '1.4rem', padding: '4px 10px', borderRadius: '8px', margin: '0' }}>
+                                                    {inearTargetMap[tId] || tId}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div style={{ fontSize: '1.1rem', fontWeight: 'bold', marginTop: '4px', marginBottom: '8px', color: 'white' }}>소리를</div>
+                                    </>
+                                )}
+
+                                {hasInEarAdj && (
+                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5px' }}>
+                                        <div className="member-cue" style={{ backgroundColor: 'transparent', color: state.current_inear_vol > 0 ? '#ef4444' : '#3b82f6', fontSize: '2.2rem', padding: '0 0.5rem', margin: '0 0 5px 0' }}>
+                                            {state.current_inear_vol > 0 ? `+${state.current_inear_vol}` : state.current_inear_vol}
+                                        </div>
+                                        <div style={{ fontSize: '1.4rem', fontWeight: 'bold', color: 'white' }}>
+                                            {state.current_inear_vol > 0 ? '올려주세요' : '내려주세요'}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </Rnd>

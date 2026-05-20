@@ -332,17 +332,17 @@ export default function Master() {
                     }}
                     onClick={() => {
                         const ns = nextSongNum;
-                        socket.emit('update_state', { song_trigger: Date.now() });
                         
                         if (ns) {
-                            setTimeout(() => {
-                                socket.emit('update_state', { 
-                                    current_song: ns,
-                                    next_song: '' 
-                                });
-                                setSongNum(ns);
-                                setNextSongNum('');
-                            }, 5292); // 6th flash
+                            socket.emit('update_state', { 
+                                song_trigger: Date.now(),
+                                current_song: ns,
+                                next_song: '' 
+                            });
+                            setSongNum(ns);
+                            setNextSongNum('');
+                        } else {
+                            socket.emit('update_state', { song_trigger: Date.now() });
                         }
                     }}
                 >
