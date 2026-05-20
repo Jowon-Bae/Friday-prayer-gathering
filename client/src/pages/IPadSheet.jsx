@@ -191,10 +191,12 @@ export default function IPadSheet() {
                 {/* FLASH TRANSITION TEXT (Above the box) */}
                 {isTransitioning && (
                     <div className="flash-transition" style={{ 
+                        position: 'absolute',
+                        bottom: 'calc(100% + 15px)',
+                        left: 0,
                         backgroundColor: 'rgba(220, 38, 38, 0.9)', 
                         padding: '12px 15px', 
                         borderRadius: '12px',
-                        marginBottom: '15px',
                         width: '100%',
                         textAlign: 'center',
                         boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
