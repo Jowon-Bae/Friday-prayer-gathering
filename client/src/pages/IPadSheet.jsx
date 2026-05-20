@@ -96,6 +96,11 @@ export default function IPadSheet() {
     }, [state.song_trigger]);
 
     useEffect(() => {
+        if (socket.connected) {
+            setIsConnected(true);
+            socket.emit('update_state', {});
+        }
+
         socket.on('connect', () => setIsConnected(true));
         socket.on('disconnect', () => setIsConnected(false));
         socket.on('state_update', (newState) => {

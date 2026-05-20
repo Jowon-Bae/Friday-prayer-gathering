@@ -58,6 +58,11 @@ export default function Master() {
     const holdIntervalRef = useRef(null);
 
     useEffect(() => {
+        if (socket.connected) {
+            setIsConnected(true);
+            socket.emit('update_state', {});
+        }
+
         socket.on('connect', () => setIsConnected(true));
         socket.on('disconnect', () => setIsConnected(false));
         socket.on('state_update', (state) => {
