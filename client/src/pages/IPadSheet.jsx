@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { songMap } from '../utils/songMap';
 import ChatOverlay from '../components/ChatOverlay';
+import { Rnd } from 'react-rnd';
 
 const isCloudflare = window.location.hostname.includes('trycloudflare.com');
 const serverUrl = import.meta.env.PROD ? '' : (isCloudflare
@@ -138,17 +139,19 @@ export default function IPadSheet() {
                 </div>
             )}
 
-            {/* LEFT SIDEBAR WRAPPER */}
-            <div style={{
-                position: 'absolute',
-                bottom: '20px',
-                left: '20px',
-                width: '350px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                zIndex: 5
-            }}>
+            {/* DRAGGABLE & RESIZABLE SIDEBAR WRAPPER */}
+            <Rnd
+                default={{
+                    x: 20,
+                    y: 20,
+                    width: 350,
+                    height: 'auto',
+                }}
+                minWidth={250}
+                bounds="parent"
+                dragHandleClassName="drag-handle"
+                style={{ zIndex: 5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
+            >
                 {/* FLASH TRANSITION TEXT (Above the box) */}
                 {isTransitioning && (
                     <div className="flash-transition" style={{ 
@@ -173,44 +176,62 @@ export default function IPadSheet() {
                     backgroundColor: 'rgba(20, 20, 20, 0.85)',
                     backdropFilter: 'blur(10px)',
                     WebkitBackdropFilter: 'blur(10px)',
-                    padding: '1.5rem',
                     borderRadius: '20px',
                     boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
                     border: '1px solid rgba(255,255,255,0.1)',
                     width: '100%',
+                    height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'flex-start',
+                    overflow: 'hidden'
                 }}>
-                    <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>현재 곡</div>
-                    <div style={{ fontSize: '4rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{activeSong || '-'}</div>
-                    <div style={{ fontSize: '2rem', color: '#ccc', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[activeSong] || songMap[parseInt(activeSong, 10)] || ''}</div>
+                    {/* DRAG HANDLE */}
+                    <div className="drag-handle" style={{
+                        width: '100%',
+                        height: '35px',
+                        backgroundColor: 'rgba(255,255,255,0.1)',
+                        cursor: 'grab',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderBottom: '1px solid rgba(255,255,255,0.05)',
+                        flexShrink: 0
+                    }}>
+                        <div style={{ width: '50px', height: '6px', backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: '3px' }}></div>
+                    </div>
 
-                    <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '15px' }}></div>
+                    <div style={{ padding: '1.5rem', width: '100%', height: '100%', overflowY: 'auto' }}>
+                        <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>현재 곡</div>
+                        <div style={{ fontSize: '4rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{activeSong || '-'}</div>
+                        <div style={{ fontSize: '2rem', color: '#ccc', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[activeSong] || songMap[parseInt(activeSong, 10)] || ''}</div>
 
-                    <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>다음 곡</div>
-                    <div style={{ fontSize: '2.8rem', fontWeight: 'bold', color: '#aaa', lineHeight: 1 }}>{state.next_song || '-'}</div>
-                    <div style={{ fontSize: '1.8rem', color: '#888', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[state.next_song] || songMap[parseInt(state.next_song, 10)] || ''}</div>
+                        <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '15px' }}></div>
 
-                    <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '20px' }}></div>
+                        <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>다음 곡</div>
+                        <div style={{ fontSize: '2.8rem', fontWeight: 'bold', color: '#aaa', lineHeight: 1 }}>{state.next_song || '-'}</div>
+                        <div style={{ fontSize: '1.8rem', color: '#888', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[state.next_song] || songMap[parseInt(state.next_song, 10)] || ''}</div>
 
-                    {displayKey && <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', backgroundColor: 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '10px', marginBottom: '12px' }}>{displayKey}</div>}
-                    {displayCue && <div style={{ fontSize: '3.5rem', fontWeight: '900', color: '#3b82f6', textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '12px' }}>{displayCue}</div>}
-                    
-                    {hasModifiers && state.current_modifiers.map(mod => (
-                        <div key={mod} className="member-cue text-outline-black" style={{ fontSize: '2.2rem', color: '#eab308', marginBottom: '8px' }}>
-                            {modifierLabelMap[mod] || mod}
+                        <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '20px' }}></div>
+
+                        {displayKey && <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', backgroundColor: 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '10px', marginBottom: '12px' }}>{displayKey}</div>}
+                        {displayCue && <div style={{ fontSize: '3.5rem', fontWeight: '900', color: '#3b82f6', textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '12px' }}>{displayCue}</div>}
+                        
+                        {hasModifiers && state.current_modifiers.map(mod => (
+                            <div key={mod} className="member-cue text-outline-black" style={{ fontSize: '2.2rem', color: '#eab308', marginBottom: '8px' }}>
+                                {modifierLabelMap[mod] || mod}
+                            </div>
+                        ))}
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginTop: '15px' }}>
+                            <span style={{ fontSize: '1.2rem', color: '#888', fontWeight: 'bold' }}>BPM</span>
+                            <span style={state.is_playing ? { fontSize: '3rem', fontWeight: '900', color: '#fff', animation: `bpm-blink ${60 / state.current_bpm}s infinite` } : { fontSize: '3rem', fontWeight: '900', color: '#fff' }}>
+                                {state.current_bpm}
+                            </span>
                         </div>
-                    ))}
-
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginTop: '15px' }}>
-                        <span style={{ fontSize: '1.2rem', color: '#888', fontWeight: 'bold' }}>BPM</span>
-                        <span style={state.is_playing ? { fontSize: '3rem', fontWeight: '900', color: '#fff', animation: `bpm-blink ${60 / state.current_bpm}s infinite` } : { fontSize: '3rem', fontWeight: '900', color: '#fff' }}>
-                            {state.current_bpm}
-                        </span>
                     </div>
                 </div>
-            </div>
+            </Rnd>
 
             <ChatOverlay socket={socket} role="아이패드(iPad)" />
         </div>
