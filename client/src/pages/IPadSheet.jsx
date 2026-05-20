@@ -133,6 +133,7 @@ export default function IPadSheet() {
     const hasInEarTargets = state.current_inear_targets && state.current_inear_targets.length > 0;
     const hasInEarAdj = state.current_inear_vol !== 0 && state.current_inear_vol !== undefined;
     const imageUrl = activeSong && !imgError ? `/sheets/${activeSong}.jpg` : null;
+    const activeCueColor = state.current_color && state.current_color !== '#121212' ? state.current_color : '#3b82f6';
 
     return (
         <div style={{ position: 'relative', width: '100vw', height: '100dvh', backgroundColor: '#111', overflow: 'hidden' }}>
@@ -233,7 +234,7 @@ export default function IPadSheet() {
                         <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '20px' }}></div>
 
                         {displayKey && <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', backgroundColor: 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '10px', marginBottom: '12px' }}>{displayKey}</div>}
-                        {displayCue && <div style={{ fontSize: '3.5rem', fontWeight: '900', color: '#3b82f6', textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '12px' }}>{displayCue}</div>}
+                        {displayCue && <div style={{ fontSize: '3.5rem', fontWeight: '900', color: activeCueColor, textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '12px' }}>{displayCue}</div>}
                         
                         {hasModifiers && state.current_modifiers.map(mod => (
                             <div key={mod} className="member-cue text-outline-black" style={{ fontSize: '2.2rem', color: '#eab308', marginBottom: '8px' }}>
