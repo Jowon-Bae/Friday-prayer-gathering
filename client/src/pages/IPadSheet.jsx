@@ -237,13 +237,17 @@ export default function IPadSheet() {
                         <div style={{ fontSize: '4rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{activeSong || '-'}</div>
                         <div style={{ fontSize: '2rem', color: '#ccc', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[activeSong] || songMap[parseInt(activeSong, 10)] || ''}</div>
 
-                        <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '15px' }}></div>
-
-                        <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>다음 곡</div>
-                        <div style={{ fontSize: '2.8rem', fontWeight: 'bold', color: '#aaa', lineHeight: 1 }}>{state.next_song || '-'}</div>
-                        <div style={{ fontSize: '1.8rem', color: '#888', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[state.next_song] || songMap[parseInt(state.next_song, 10)] || ''}</div>
-
-                        <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '20px' }}></div>
+                        {state.next_song ? (
+                            <>
+                                <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '15px' }}></div>
+                                <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>다음 곡</div>
+                                <div style={{ fontSize: '2.8rem', fontWeight: 'bold', color: '#aaa', lineHeight: 1 }}>{state.next_song}</div>
+                                <div style={{ fontSize: '1.8rem', color: '#888', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[state.next_song] || songMap[parseInt(state.next_song, 10)] || ''}</div>
+                                <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '20px' }}></div>
+                            </>
+                        ) : (
+                            <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '20px', marginTop: '10px' }}></div>
+                        )}
 
                         {displayKey && <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', backgroundColor: 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '10px', marginBottom: '12px' }}>{displayKey}</div>}
                         {displayCue && <div style={{ fontSize: '3.5rem', fontWeight: '900', color: activeCueColor, textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '12px' }}>{displayCue}</div>}
