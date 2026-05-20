@@ -91,10 +91,13 @@ export default function IPadSheet() {
         };
     }, []);
 
-    // Reset image error state when current song changes
+    // Use the next song immediately when transition starts so musicians can prepare
+    const activeSong = (isTransitioning && state.next_song) ? state.next_song : state.current_song;
+
+    // Reset image error state when active song changes
     useEffect(() => {
         setImgError(false);
-    }, [state.current_song]);
+    }, [activeSong]);
 
     const displayCue = state.current_cue && state.current_cue !== 'WAIT'
         ? (cueLabelMap[state.current_cue] || state.current_cue)
@@ -110,7 +113,7 @@ export default function IPadSheet() {
     };
 
     const hasModifiers = state.current_modifiers && state.current_modifiers.length > 0;
-    const imageUrl = state.current_song && !imgError ? `/sheets/${state.current_song}.jpg` : null;
+    const imageUrl = activeSong && !imgError ? `/sheets/${activeSong}.jpg` : null;
 
     return (
         <div style={{ position: 'relative', width: '100vw', height: '100dvh', backgroundColor: '#111', overflow: 'hidden' }}>
@@ -122,7 +125,7 @@ export default function IPadSheet() {
             {imageUrl ? (
                 <img 
                     src={imageUrl} 
-                    alt={`Sheet Music for Song ${state.current_song}`} 
+                    alt={`Sheet Music for Song ${activeSong}`} 
                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     onError={() => setImgError(true)}
                 />
@@ -130,7 +133,7 @@ export default function IPadSheet() {
                 <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
                     <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📄</div>
                     <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-                        {state.current_song ? `악보가 없습니다. (/sheets/${state.current_song}.jpg)` : '대기중...'}
+                        {activeSong ? `악보가 없습니다. (/sheets/${activeSong}.jpg)` : '대기중...'}
                     </div>
                 </div>
             )}
@@ -154,8 +157,8 @@ export default function IPadSheet() {
                 zIndex: 5
             }}>
                 <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '5px' }}>현재 곡</div>
-                <div style={{ fontSize: '2rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{state.current_song || '-'}</div>
-                <div style={{ fontSize: '1rem', color: '#ccc', marginBottom: '15px' }}>{songMap[state.current_song] || songMap[parseInt(state.current_song, 10)] || ''}</div>
+                <div style={{ fontSize: '2rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{activeSong || '-'}</div>
+                <div style={{ fontSize: '1rem', color: '#ccc', marginBottom: '15px' }}>{songMap[activeSong] || songMap[parseInt(activeSong, 10)] || ''}</div>
 
                 <div style={{ height: '2px', width: '100%', backgroundColor: 'rgba(255,255,255,0.1)', marginBottom: '15px' }}></div>
 
@@ -178,7 +181,7 @@ export default function IPadSheet() {
 
             {/* FLASH TRANSITION */}
             {isTransitioning && (
-                <div className="flash-transition" style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}>
+                <div className="flash-transition" style={{ position: 'absolute', inset: 0, backgroundColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, pointerEvents: 'none' }}>
                     <h2 style={{ fontSize: '6vw', fontWeight: '900', color: 'white', textAlign: 'center', lineHeight: 1.3, textShadow: '2px 2px 4px black, -2px -2px 4px black, 2px -2px 4px black, -2px 2px 4px black' }}>
                         다음 곡으로<br/>넘어가겠습니다!
                     </h2>
