@@ -145,6 +145,7 @@ export default function IPadSheet() {
             {/* MAIN SHEET MUSIC AREA */}
             {imageUrl ? (
                 <TransformWrapper 
+                    key={activeSong}
                     initialScale={1} 
                     centerOnInit={false}
                     doubleClick={{ disabled: false }}
