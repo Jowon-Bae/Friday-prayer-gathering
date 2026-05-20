@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Master from './pages/Master';
 import Member from './pages/Member';
 import InEar from './pages/InEar';
+import IPadSheet from './pages/IPadSheet';
 import SplashScreen from './components/SplashScreen';
 import './index.css';
 
@@ -18,6 +19,7 @@ function App() {
                     <Route path="/master" element={<Master />} />
                     <Route path="/member" element={<Member />} />
                     <Route path="/inear" element={<InEar />} />
+                    <Route path="/ipad" element={<IPadSheet />} />
                 </Routes>
             </BrowserRouter>
         </>
@@ -32,6 +34,7 @@ function Home() {
             <div className="home-links">
                 <Link to="/master" className="home-btn master-btn">Master Mode (인도자)</Link>
                 <Link to="/member" className="home-btn member-btn">Member Mode (팀원)</Link>
+                <Link to="/ipad" className="home-btn" style={{ backgroundColor: '#14b8a6', color: 'white', fontWeight: 'bold' }}>iPad Mode (악보+큐)</Link>
             </div>
         </div>
     );
