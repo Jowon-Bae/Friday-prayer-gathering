@@ -199,7 +199,7 @@ export default function IPadSheet() {
                         textAlign: 'center',
                         boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
                         border: '1px solid rgba(255,100,100,0.5)',
-                        animation: 'flash-text-blink 0.5s infinite alternate'
+                        animation: 'flash-text-blink 1s infinite alternate'
                     }}>
                         <div style={{ fontSize: '1.5rem', fontWeight: '900', color: 'white', lineHeight: 1.3, textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>
                             다음 곡으로<br/>넘어가겠습니다!
