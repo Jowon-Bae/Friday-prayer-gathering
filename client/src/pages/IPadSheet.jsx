@@ -459,7 +459,7 @@ export default function IPadSheet() {
                         {displayCue && <div style={{ fontSize: '3.5rem', fontWeight: '900', color: activeCueColor, textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '12px' }}>{displayCue}</div>}
                         
                         {hasModifiers && state.current_modifiers.map(mod => (
-                            <div key={mod} style={{ fontSize: '2.2rem', fontWeight: '900', color: '#eab308', textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '8px' }}>
+                            <div key={mod} style={{ fontSize: '2.2rem', fontWeight: '900', color: '#eab308', textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '8px', animation: 'flash-text-blink 0.882s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}>
                                 {modifierLabelMap[mod] || mod}
                             </div>
                         ))}
