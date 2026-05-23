@@ -245,7 +245,7 @@ export default function IPadSheet() {
                     x: 20,
                     y: 160,
                     width: 350,
-                    height: 1156,
+                    height: 810,
                 }}
                 minWidth={250}
                 minHeight={350}
@@ -325,12 +325,48 @@ export default function IPadSheet() {
                     <div style={{ padding: '1.5rem', width: '100%', height: '100%', overflowY: 'auto' }}>
                         <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>현재 곡</div>
                         <div style={{ fontSize: '4rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{activeSong || '-'}</div>
-                        <div style={{ fontSize: '2rem', color: '#ccc', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[activeSong] || songMap[parseInt(activeSong, 10)] || ''}</div>
+                        {(function() {
+                            const title = songMap[activeSong] || songMap[parseInt(activeSong, 10)] || '';
+                            const charFactor = title.length > 0 ? title.split('').reduce((acc, char) => acc + (char.charCodeAt(0) > 255 ? 1 : 0.6), 0) : 1;
+                            return (
+                                <div style={{ containerType: 'inline-size', width: '100%', marginBottom: '20px' }}>
+                                    <div style={{ 
+                                        fontSize: `min(2rem, calc(100cqi / ${Math.max(1, charFactor)}))`, 
+                                        color: '#ccc', 
+                                        textAlign: 'left', 
+                                        lineHeight: 1.2,
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis'
+                                    }}>
+                                        {title}
+                                    </div>
+                                </div>
+                            );
+                        })()}
 
                         <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '15px' }}></div>
                         <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>다음 곡</div>
                         <div style={{ fontSize: '2.8rem', fontWeight: 'bold', color: '#aaa', lineHeight: 1 }}>{state.next_song || '-'}</div>
-                        <div style={{ fontSize: '1.8rem', color: '#888', marginBottom: '20px', textAlign: 'left', lineHeight: 1.2 }}>{songMap[state.next_song] || songMap[parseInt(state.next_song, 10)] || ''}</div>
+                        {(function() {
+                            const title = songMap[state.next_song] || songMap[parseInt(state.next_song, 10)] || '';
+                            const charFactor = title.length > 0 ? title.split('').reduce((acc, char) => acc + (char.charCodeAt(0) > 255 ? 1 : 0.6), 0) : 1;
+                            return (
+                                <div style={{ containerType: 'inline-size', width: '100%', marginBottom: '20px' }}>
+                                    <div style={{ 
+                                        fontSize: `min(1.8rem, calc(100cqi / ${Math.max(1, charFactor)}))`, 
+                                        color: '#888', 
+                                        textAlign: 'left', 
+                                        lineHeight: 1.2,
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis'
+                                    }}>
+                                        {title}
+                                    </div>
+                                </div>
+                            );
+                        })()}
                         <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '20px' }}></div>
 
                         {displayKey && <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', backgroundColor: 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '10px', marginBottom: '12px' }}>{displayKey}</div>}
