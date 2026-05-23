@@ -233,9 +233,9 @@ export default function IPadSheet() {
             <Rnd
                 default={{
                     x: 20,
-                    y: 150,
+                    y: 40,
                     width: 350,
-                    height: 500,
+                    height: 680,
                 }}
                 minWidth={250}
                 minHeight={350}
