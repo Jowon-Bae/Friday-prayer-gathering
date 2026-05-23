@@ -66,6 +66,7 @@ export default function IPadSheet() {
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [chatImagePreview, setChatImagePreview] = useState(null);
     const [imgError, setImgError] = useState(false);
+    const [widgetRect, setWidgetRect] = useState({ x: 20, y: 160, width: 350, height: 810 });
     const prevTriggerRef = useRef(0);
     const hasReceivedInitialState = useRef(false);
 
@@ -227,14 +228,32 @@ export default function IPadSheet() {
                         doubleClick={{ disabled: false }}
                         pinch={{ step: 5 }}
                     >
-                        <TransformComponent wrapperStyle={{ width: 'calc(100vw - 390px)', height: '100dvh', position: 'absolute', right: 0, top: 0 }} contentStyle={{ width: '100%', height: '100%' }}>
-                            <img 
-                                src={chatImagePreview} 
-                                alt="Chat Preview" 
-                                className="sheet-fade-in"
-                                style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }}
-                            />
-                        </TransformComponent>
+                        {(() => {
+                            const isWidgetOnLeft = (widgetRect.x + widgetRect.width / 2) < (window.innerWidth / 2);
+                            const imageLeft = isWidgetOnLeft ? widgetRect.x + widgetRect.width + 20 : 20;
+                            const imageWidth = isWidgetOnLeft 
+                                ? `calc(100vw - ${imageLeft + 20}px)`
+                                : `${widgetRect.x - 40}px`;
+                            return (
+                                <TransformComponent 
+                                    wrapperStyle={{ 
+                                        width: imageWidth, 
+                                        height: '100dvh', 
+                                        position: 'absolute', 
+                                        left: isWidgetOnLeft ? `${imageLeft}px` : '20px',
+                                        top: 0 
+                                    }} 
+                                    contentStyle={{ width: '100%', height: '100%' }}
+                                >
+                                    <img 
+                                        src={chatImagePreview} 
+                                        alt="Chat Preview" 
+                                        className="sheet-fade-in"
+                                        style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }}
+                                    />
+                                </TransformComponent>
+                            );
+                        })()}
                     </TransformWrapper>
                     <button 
                         onClick={() => setChatImagePreview(null)}
@@ -295,6 +314,15 @@ export default function IPadSheet() {
                     y: 160,
                     width: 350,
                     height: 810,
+                }}
+                onDrag={(e, d) => setWidgetRect(prev => ({ ...prev, x: d.x, y: d.y }))}
+                onResize={(e, direction, ref, delta, position) => {
+                    setWidgetRect({
+                        x: position.x,
+                        y: position.y,
+                        width: ref.offsetWidth,
+                        height: ref.offsetHeight
+                    });
                 }}
                 minWidth={250}
                 minHeight={350}
