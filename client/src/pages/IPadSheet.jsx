@@ -190,6 +190,16 @@ export default function IPadSheet() {
         };
     }, []);
 
+    const keyColorMap = {
+        'KA': 'var(--color-key-a)',
+        'KBb': 'var(--color-key-bb)',
+        'KC': 'var(--color-key-c)',
+        'KD': 'var(--color-key-d)',
+        'KE': 'var(--color-key-e)',
+        'KF': 'var(--color-key-f)',
+        'KG': 'var(--color-key-g)'
+    };
+    
     const modifierLabelMap = {
         'ONEMORE': '한 번 더',
         'KEYUP': 'Key up'
@@ -408,7 +418,7 @@ export default function IPadSheet() {
                         })()}
                         <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '20px' }}></div>
 
-                        {displayKey && <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', backgroundColor: 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '10px', marginBottom: '12px' }}>{displayKey}</div>}
+                        {displayKey && <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', backgroundColor: keyColorMap[state.current_key] || 'rgba(255,255,255,0.2)', padding: '6px 16px', borderRadius: '10px', marginBottom: '12px', textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>{displayKey}</div>}
                         {displayCue && <div style={{ fontSize: '3.5rem', fontWeight: '900', color: activeCueColor, textShadow: '0 4px 10px rgba(0,0,0,0.5)', marginBottom: '12px' }}>{displayCue}</div>}
                         
                         {hasModifiers && state.current_modifiers.map(mod => (
