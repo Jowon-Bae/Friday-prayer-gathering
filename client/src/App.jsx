@@ -88,7 +88,7 @@ function Home() {
                 <h1>Worship Team<br />Cue System</h1>
                 <div style={{ marginBottom: '20px', textAlign: 'center' }}>
                     <span style={{ color: '#4ade80', fontSize: '1rem', fontWeight: 'bold', letterSpacing: '2px', backgroundColor: 'rgba(74,222,128,0.1)', padding: '6px 16px', borderRadius: '20px', border: '1px solid rgba(74,222,128,0.3)' }}>
-                        🏠 {confirmedRoom}
+                        {confirmedRoom}
                     </span>
                     <button onClick={handleLogout} style={{ marginLeft: '10px', background: 'none', border: '1px solid #555', color: '#888', borderRadius: '8px', padding: '5px 10px', fontSize: '0.8rem', cursor: 'pointer' }}>나가기</button>
                 </div>
