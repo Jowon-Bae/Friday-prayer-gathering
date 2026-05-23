@@ -226,9 +226,7 @@ export default function IPadSheet() {
                     borderRadius: '20px',
                     boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
                     border: '1px solid rgba(255,255,255,0.1)',
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
+                    width: '100%', height: 'auto', display: 'flex', flexShrink: 0,
                     flexDirection: 'column',
                     alignItems: 'flex-start',
                     overflow: 'hidden'
@@ -307,33 +305,29 @@ export default function IPadSheet() {
                         )}
                     </div>
                 </div>
-            </Rnd>
-
             
-            {/* DRAGGABLE CHAT WIDGET */}
-            <Rnd
-                default={{
-                    x: 390,
-                    y: 160,
-                    width: 350,
-                    height: 450,
-                }}
-                minWidth={250}
-                minHeight={300}
-                bounds="parent"
-                dragHandleClassName="chat-drag-handle"
-                style={{ zIndex: 6, display: 'flex', flexDirection: 'column' }}
-            >
-                <div className="chat-drag-handle" style={{
-                    width: '100%', height: '35px', backgroundColor: 'rgba(220, 38, 38, 0.9)', 
-                    cursor: 'move', display: 'flex', alignItems: 'center', justifyContent: 'center', 
-                    color: 'white', fontWeight: 'bold', borderTopLeftRadius: '15px', borderTopRightRadius: '15px',
-                    boxShadow: '0 -4px 15px rgba(0,0,0,0.5)'
+                {/* CHAT WIDGET */}
+                <div style={{
+                    marginTop: '15px',
+                    width: '100%',
+                    flex: 1,
+                    minHeight: '400px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    borderRadius: '20px',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+                    overflow: 'hidden'
                 }}>
-                    💬 실시간 팀 채팅 (드래그)
-                </div>
-                <div style={{ flex: 1, height: 'calc(100% - 35px)', backgroundColor: 'rgba(30, 30, 30, 0.9)', borderBottomLeftRadius: '15px', borderBottomRightRadius: '15px', overflow: 'hidden' }}>
-                    <ChatOverlay socket={socket} role="아이패드(iPad)" inline={true} />
+                    <div className="drag-handle" style={{
+                        width: '100%', height: '35px', backgroundColor: 'rgba(220, 38, 38, 0.9)', 
+                        cursor: 'grab', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                        color: 'white', fontWeight: 'bold'
+                    }}>
+                        💬 실시간 팀 채팅 (드래그)
+                    </div>
+                    <div style={{ flex: 1, backgroundColor: 'rgba(30, 30, 30, 0.9)' }}>
+                        <ChatOverlay socket={socket} role="아이패드(iPad)" inline={true} />
+                    </div>
                 </div>
             </Rnd>
 
