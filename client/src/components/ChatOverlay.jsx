@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ChatOverlay.css';
 
-export default function ChatOverlay({ socket, role }) {
+export default function ChatOverlay({ socket, role, inline = false }) {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -170,18 +170,18 @@ export default function ChatOverlay({ socket, role }) {
     return (
         <>
             {/* Floating Action Button */}
-            <button className={`chat-fab ${isOpen ? 'open' : ''}`} onClick={toggleChat}>
+            {!inline && <button className={`chat-fab ${isOpen ? 'open' : ''}`} onClick={toggleChat}>}
                 {isOpen ? '✕' : '💬'}
                 {!isOpen && unreadCount > 0 && (
                     <span className="chat-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>
                 )}
-            </button>
+            </button>}
 
             {/* Chat Drawer/Overlay */}
-            <div className={`chat-overlay ${isOpen ? 'active' : ''}`}>
+            <div className={`chat-overlay ${isOpen || inline ? 'active' : ''} ${inline ? 'inline' : ''}`}>
                 <div className="chat-header">
                     <h2>팀 채팅방</h2>
-                    <button className="chat-close" onClick={toggleChat}>✕</button>
+                    {!inline && <button className="chat-close" onClick={toggleChat}>✕</button>}
                 </div>
 
                 <div className="chat-messages">
@@ -265,7 +265,7 @@ export default function ChatOverlay({ socket, role }) {
             </div>
 
             {/* Backdrop to close when clicking outside */}
-            {isOpen && <div className="chat-backdrop" onClick={toggleChat}></div>}
+            {!inline && isOpen && <div className="chat-backdrop" onClick={toggleChat}></div>}
 
             {/* Fullscreen Image Viewer Modal */}
             {fullscreenImage && (
