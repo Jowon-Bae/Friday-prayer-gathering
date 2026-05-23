@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ChatOverlay.css';
 
-export default function ChatOverlay({ socket, role, inline = false, onImageClick }) {
+export default function ChatOverlay({ socket, role, inline = false, onImageClick, onNewMessage }) {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -29,6 +29,7 @@ export default function ChatOverlay({ socket, role, inline = false, onImageClick
             if (msg.role !== role) {
                 setNewMessageToast(true);
                 setTimeout(() => setNewMessageToast(false), 4000);
+                if (onNewMessage) onNewMessage();
             }
         };
 

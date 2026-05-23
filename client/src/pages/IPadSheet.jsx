@@ -66,6 +66,15 @@ export default function IPadSheet() {
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [chatImagePreview, setChatImagePreview] = useState(null);
     const [imgError, setImgError] = useState(false);
+    const [chatBlink, setChatBlink] = useState(false);
+    const chatBlinkTimer = useRef(null);
+    const handleNewChatMessage = () => {
+        setChatBlink(true);
+        if (chatBlinkTimer.current) clearTimeout(chatBlinkTimer.current);
+        chatBlinkTimer.current = setTimeout(() => {
+            setChatBlink(false);
+        }, 4000);
+    };
     const [widgetRect, setWidgetRect] = useState({ x: 20, y: 160, width: 350, height: 810 });
     const prevTriggerRef = useRef(0);
     const hasReceivedInitialState = useRef(false);
@@ -508,7 +517,9 @@ export default function IPadSheet() {
                     overflow: 'hidden'
                 }}>
                     <div className="drag-handle" style={{
-                        width: '100%', height: '35px', backgroundColor: 'rgba(255,255,255,0.1)', 
+                        width: '100%', height: '35px', 
+                        backgroundColor: chatBlink ? '#3b82f6' : 'rgba(255,255,255,0.1)', 
+                        transition: 'background-color 0.5s ease',
                         cursor: 'grab', display: 'flex', alignItems: 'center', justifyContent: 'center', 
                         color: 'white', fontWeight: 'bold'
                     }}>
@@ -516,7 +527,7 @@ export default function IPadSheet() {
                     </div>
                     <div style={{ flex: 1, backgroundColor: 'rgba(30, 30, 30, 0.9)', position: 'relative', minHeight: 0, overflow: 'hidden' }}>
                         <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, display: 'flex', flexDirection: 'column' }}>
-                            <ChatOverlay socket={socket} role="아이패드(iPad)" inline={true} onImageClick={setChatImagePreview} />
+                            <ChatOverlay socket={socket} role="아이패드(iPad)" inline={true} onImageClick={setChatImagePreview} onNewMessage={handleNewChatMessage} />
                         </div>
                     </div>
                 </div>
