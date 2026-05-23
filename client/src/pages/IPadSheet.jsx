@@ -322,7 +322,7 @@ export default function IPadSheet() {
                     x: 20,
                     y: 160,
                     width: 350,
-                    height: 880,
+                    height: window.innerHeight > 800 ? 650 : window.innerHeight - 180,
                 }}
                 onDrag={(e, d) => setWidgetRect(prev => ({ ...prev, x: d.x, y: d.y }))}
                 onResize={(e, direction, ref, delta, position) => {
