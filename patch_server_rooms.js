@@ -1,4 +1,6 @@
-import express from 'express';
+const fs = require('fs');
+
+const newServer = `import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
@@ -42,7 +44,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded.' });
     }
-    const fileUrl = `/uploads/${req.file.filename}`;
+    const fileUrl = \`/uploads/\${req.file.filename}\`;
     res.json({
         url: fileUrl,
         originalName: req.file.originalname,
@@ -103,7 +105,7 @@ io.on('connection', (socket) => {
 
         currentRoom = room;
         socket.join(room);
-        console.log(`${socket.id} joined room: ${room}`);
+        console.log(\`\${socket.id} joined room: \${room}\`);
 
         // Send current room state and chat history to this client
         socket.emit('state_update', getRoomState(room));
@@ -175,5 +177,9 @@ app.get('*', (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-    console.log(`Socket.IO Server running on port ${PORT}`);
+    console.log(\`Socket.IO Server running on port \${PORT}\`);
 });
+`;
+
+fs.writeFileSync('server/index.js', newServer);
+console.log('Server patched successfully');

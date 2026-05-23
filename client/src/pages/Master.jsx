@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { songMap } from '../utils/songMap';
 import ChatOverlay from '../components/ChatOverlay';
@@ -50,6 +50,8 @@ export default function Master() {
     const [songNum, setSongNum] = useState('');
     const [nextSongNum, setNextSongNum] = useState('');
     const [inputSongNum, setInputSongNum] = useState('');
+    const [searchParams] = useSearchParams();
+    const roomCode = (searchParams.get('room') || localStorage.getItem('roomCode') || 'DEFAULT').toUpperCase().trim();
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [isPlaying, setIsPlaying] = useState(false);
 
@@ -63,7 +65,14 @@ export default function Master() {
             socket.emit('update_state', {});
         }
 
-        socket.on('connect', () => setIsConnected(true));
+        socket.on('connect', () => {
+            setIsConnected(true);
+            socket.emit('join_room', roomCode);
+        });
+        // If already connected (reconnect/refresh), emit immediately
+        if (socket.connected) {
+            socket.emit('join_room', roomCode);
+        }
         socket.on('disconnect', () => setIsConnected(false));
         socket.on('state_update', (state) => {
             setBpm(state.current_bpm);

@@ -1,4 +1,6 @@
-import { useState } from 'react';
+const fs = require('fs');
+
+const newMain = `import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import Master from './pages/Master';
 import Member from './pages/Member';
@@ -37,7 +39,7 @@ function Home() {
         localStorage.setItem('roomCode', code);
     };
 
-    const getLink = (path) => roomCode ? `${path}?room=${roomCode}` : null;
+    const getLink = (path) => roomCode ? \`\${path}?room=\${roomCode}\` : null;
 
     return (
         <div className="home-container">
@@ -120,3 +122,7 @@ function Home() {
 }
 
 export default App;
+`;
+
+fs.writeFileSync('client/src/main.jsx', newMain);
+console.log('main.jsx patched successfully');

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
+import { useSearchParams } from 'react-router-dom';
 import { songMap } from '../utils/songMap';
 import ChatOverlay from '../components/ChatOverlay';
 
@@ -57,6 +58,8 @@ export default function Member() {
         current_inear_vol: 0,
         song_trigger: 0
     });
+    const [searchParams] = useSearchParams();
+    const roomCode = (searchParams.get('room') || localStorage.getItem('roomCode') || 'DEFAULT').toUpperCase().trim();
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const prevTriggerRef = useRef(null);
@@ -100,7 +103,14 @@ export default function Member() {
             socket.emit('update_state', {});
         }
 
-        socket.on('connect', () => setIsConnected(true));
+        socket.on('connect', () => {
+            setIsConnected(true);
+            socket.emit('join_room', roomCode);
+        });
+        // If already connected (reconnect/refresh), emit immediately
+        if (socket.connected) {
+            socket.emit('join_room', roomCode);
+        }
         socket.on('disconnect', () => setIsConnected(false));
         socket.on('state_update', (newState) => {
             setState(prev => ({ ...prev, ...newState }));

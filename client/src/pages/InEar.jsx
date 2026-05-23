@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { songMap } from '../utils/songMap';
 
@@ -31,6 +31,8 @@ export default function InEar() {
     const navigate = useNavigate();
     const [targets, setTargets] = useState([]);
     const [vol, setVol] = useState(0);
+    const [searchParams] = useSearchParams();
+    const roomCode = (searchParams.get('room') || localStorage.getItem('roomCode') || 'DEFAULT').toUpperCase().trim();
     const [isConnected, setIsConnected] = useState(socket.connected);
 
     // To show preview, we also listen to member state
@@ -44,7 +46,14 @@ export default function InEar() {
     });
 
     useEffect(() => {
-        socket.on('connect', () => setIsConnected(true));
+        socket.on('connect', () => {
+            setIsConnected(true);
+            socket.emit('join_room', roomCode);
+        });
+        // If already connected (reconnect/refresh), emit immediately
+        if (socket.connected) {
+            socket.emit('join_room', roomCode);
+        }
         socket.on('disconnect', () => setIsConnected(false));
         socket.on('state_update', (state) => {
             if (state.current_inear_targets !== undefined) setTargets(state.current_inear_targets);
