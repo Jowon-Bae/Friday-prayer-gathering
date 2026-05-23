@@ -61,6 +61,7 @@ export default function IPadSheet() {
     });
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [chatImagePreview, setChatImagePreview] = useState(null);
     const [imgError, setImgError] = useState(false);
     const prevTriggerRef = useRef(0);
     const hasReceivedInitialState = useRef(false);
@@ -68,6 +69,7 @@ export default function IPadSheet() {
     useEffect(() => {
         if (state.song_trigger && state.song_trigger > prevTriggerRef.current) {
             setIsTransitioning(true);
+            setChatImagePreview(null);
             const transitionTimer = setTimeout(() => {
                 setIsTransitioning(false);
             }, 7058);
@@ -323,10 +325,10 @@ export default function IPadSheet() {
                         cursor: 'grab', display: 'flex', alignItems: 'center', justifyContent: 'center', 
                         color: 'white', fontWeight: 'bold'
                     }}>
-                        💬 실시간 팀 채팅 (드래그)
+                        💬 실시간 팀 채팅
                     </div>
                     <div style={{ flex: 1, backgroundColor: 'rgba(30, 30, 30, 0.9)' }}>
-                        <ChatOverlay socket={socket} role="아이패드(iPad)" inline={true} />
+                        <ChatOverlay socket={socket} role="아이패드(iPad)" inline={true} onImageClick={setChatImagePreview} />
                     </div>
                 </div>
             </Rnd>

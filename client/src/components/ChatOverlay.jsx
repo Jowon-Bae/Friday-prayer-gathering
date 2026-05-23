@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ChatOverlay.css';
 
-export default function ChatOverlay({ socket, role, inline = false }) {
+export default function ChatOverlay({ socket, role, inline = false, onImageClick }) {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -128,7 +128,13 @@ export default function ChatOverlay({ socket, role, inline = false }) {
     };
 
     // Fullscreen Image Handlers
-    const openFullscreen = (msg) => setFullscreenImage(msg);
+    const openFullscreen = (msg) => {
+        if (onImageClick) {
+            onImageClick(msg.fileUrl);
+        } else {
+            setFullscreenImage(msg);
+        }
+    };
     const closeFullscreen = () => {
         setFullscreenImage(null);
         setDragOffset(0);
