@@ -159,7 +159,24 @@ export default function IPadSheet() {
             </div>
 
             {/* MAIN SHEET MUSIC AREA */}
-            {imageUrl ? (
+            {chatImagePreview ? (
+                <TransformWrapper 
+                    key={chatImagePreview}
+                    initialScale={1} 
+                    centerOnInit={false}
+                    doubleClick={{ disabled: false }}
+                    pinch={{ step: 5 }}
+                >
+                    <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
+                        <img 
+                            src={chatImagePreview} 
+                            alt="Chat Preview" 
+                            className="sheet-fade-in"
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right' }}
+                        />
+                    </TransformComponent>
+                </TransformWrapper>
+            ) : imageUrl ? (
                 <TransformWrapper 
                     key={activeSong}
                     initialScale={1} 
