@@ -429,3 +429,11 @@ body {
     0% { opacity: 0; transform: translate(-50%, -20px) scale(0.9); }
     100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
 }
+
+@keyframes chat-header-bg-blink {
+  0%, 100% { background-color: rgba(255,255,255,0.1); }
+  50% { background-color: #3b82f6; }
+}
+.chat-blink-active {
+  animation: chat-header-bg-blink 0.882s cubic-bezier(0.4, 0, 0.6, 1) 8 !important;
+}

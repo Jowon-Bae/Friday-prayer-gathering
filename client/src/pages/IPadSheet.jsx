@@ -73,7 +73,7 @@ export default function IPadSheet() {
         if (chatBlinkTimer.current) clearTimeout(chatBlinkTimer.current);
         chatBlinkTimer.current = setTimeout(() => {
             setChatBlink(false);
-        }, 4000);
+        }, 7058);
     };
     const [widgetRect, setWidgetRect] = useState({ x: 20, y: 160, width: 350, height: 810 });
     const prevTriggerRef = useRef(0);
@@ -516,10 +516,9 @@ export default function IPadSheet() {
                     boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
                     overflow: 'hidden'
                 }}>
-                    <div className="drag-handle" style={{
+                    <div className={`drag-handle ${chatBlink ? 'chat-blink-active' : ''}`} style={{
                         width: '100%', height: '35px', 
-                        backgroundColor: chatBlink ? '#3b82f6' : 'rgba(255,255,255,0.1)', 
-                        transition: 'background-color 0.5s ease',
+                        backgroundColor: 'rgba(255,255,255,0.1)', 
                         cursor: 'grab', display: 'flex', alignItems: 'center', justifyContent: 'center', 
                         color: 'white', fontWeight: 'bold'
                     }}>
