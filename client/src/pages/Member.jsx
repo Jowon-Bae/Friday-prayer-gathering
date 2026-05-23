@@ -194,7 +194,7 @@ export default function Member() {
                 {displayKey && <div className="member-cue">{displayKey}</div>}
                 {displayCue && <div className="member-cue">{displayCue}</div>}
                 {hasModifiers && state.current_modifiers.map(mod => (
-                    <div key={mod} className="member-cue text-outline-black">{modifierLabelMap[mod] || mod}</div>
+                    <div key={mod} className="member-cue" style={{ textShadow: '0 4px 10px rgba(0,0,0,0.5)' }}>{modifierLabelMap[mod] || mod}</div>
                 ))}
                 {isWaiting && <div className="member-cue">WAIT</div>}
             </div>
