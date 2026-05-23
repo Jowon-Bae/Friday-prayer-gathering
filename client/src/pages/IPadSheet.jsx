@@ -508,7 +508,7 @@ export default function IPadSheet() {
                     overflow: 'hidden'
                 }}>
                     <div className="drag-handle" style={{
-                        width: '100%', height: '35px', backgroundColor: 'rgba(220, 38, 38, 0.9)', 
+                        width: '100%', height: '35px', backgroundColor: 'rgba(255,255,255,0.1)', 
                         cursor: 'grab', display: 'flex', alignItems: 'center', justifyContent: 'center', 
                         color: 'white', fontWeight: 'bold'
                     }}>
