@@ -12,7 +12,7 @@
     border: none;
     font-size: 1.8rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    cursor: pointer;
+    cursor: pointer;\n    white-space: nowrap;\n    flex-shrink: 0;
     z-index: 1000;
     display: flex;
     align-items: center;
