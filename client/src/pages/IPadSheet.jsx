@@ -212,10 +212,12 @@ export default function IPadSheet() {
                     height: 700,
                 }}
                 minWidth={250}
+                minHeight={350}
                 bounds="parent"
                 dragHandleClassName="drag-handle"
-                style={{ zIndex: 5, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
+                style={{ zIndex: 5 }}
             >
+                <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
                 {/* FLASH TRANSITION TEXT (Above the box) */}
                 {isTransitioning && (
                     <div className="flash-transition" style={{ 
@@ -349,6 +351,7 @@ export default function IPadSheet() {
                             <ChatOverlay socket={socket} role="아이패드(iPad)" inline={true} onImageClick={setChatImagePreview} />
                         </div>
                     </div>
+                </div>
                 </div>
             </Rnd>
 
