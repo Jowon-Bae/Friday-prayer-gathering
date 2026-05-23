@@ -117,14 +117,14 @@ function Home() {
                 boxSizing: 'border-box'
             }}>
                 <div style={{ fontSize: '0.8rem', color: '#aaa', fontWeight: 'bold', letterSpacing: '1px', marginBottom: '14px', textAlign: 'center' }}>
-                    팀 코드 입력
+                    Team Code
                 </div>
                 <input
                     type="text"
                     value={roomCode}
                     onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                     onKeyDown={(e) => e.key === 'Enter' && handleEnter()}
-                    placeholder="팀 코드"
+                    placeholder="Team Code"
                     style={{
                         width: '100%', padding: '13px 16px', borderRadius: '10px',
                         border: '1px solid rgba(255,255,255,0.18)', backgroundColor: 'rgba(0,0,0,0.3)',
@@ -138,7 +138,7 @@ function Home() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleEnter()}
-                    placeholder="비밀번호 (없으면 비워두세요)"
+                    placeholder="Password"
                     style={{
                         width: '100%', padding: '13px 16px', borderRadius: '10px',
                         border: '1px solid rgba(255,255,255,0.18)', backgroundColor: 'rgba(0,0,0,0.3)',
@@ -152,12 +152,12 @@ function Home() {
                     disabled={isVerifying}
                     style={{
                         width: '100%', padding: '13px', borderRadius: '10px', border: 'none',
-                        backgroundColor: isVerifying ? '#555' : '#3b82f6',
+                        backgroundColor: isVerifying ? '#555' : '#d4af37',
                         color: 'white', fontWeight: 'bold', fontSize: '1rem',
                         cursor: isVerifying ? 'not-allowed' : 'pointer', letterSpacing: '1px'
                     }}
                 >
-                    {isVerifying ? '확인 중...' : '입장 →'}
+                    {isVerifying ? '확인 중...' : '입장'}
                 </button>
             </div>
         </div>
