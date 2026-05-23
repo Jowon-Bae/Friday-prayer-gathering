@@ -365,7 +365,7 @@ export default function IPadSheet() {
                         position: 'absolute',
                         bottom: 'calc(100% + 15px)',
                         left: 0,
-                        backgroundColor: 'rgba(220, 38, 38, 0.9)', 
+                        backgroundColor: 'var(--color-ch)', 
                         padding: '12px 15px', 
                         borderRadius: '12px',
                         width: '100%',
