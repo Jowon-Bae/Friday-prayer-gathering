@@ -239,7 +239,6 @@ export default function IPadSheet() {
                 }}
                 minWidth={250}
                 minHeight={350}
-                bounds="parent"
                 dragHandleClassName="drag-handle"
                 style={{ zIndex: 5 }}
             >
