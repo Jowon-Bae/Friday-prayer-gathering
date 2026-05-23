@@ -245,7 +245,7 @@ export default function IPadSheet() {
                     x: 20,
                     y: 160,
                     width: 350,
-                    height: 680,
+                    height: 1156,
                 }}
                 minWidth={250}
                 minHeight={350}
@@ -259,7 +259,7 @@ export default function IPadSheet() {
                 }}
                 resizeHandleComponent={{
                     bottom: (
-                        <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', paddingTop: '5px' }}>
+                        <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', paddingTop: '5px', zIndex: 9999, position: 'relative' }}>
                             <div style={{ backgroundColor: '#fff', color: '#000', fontSize: '11px', fontWeight: 'bold', padding: '4px 10px', borderRadius: '12px', boxShadow: '0 4px 10px rgba(0,0,0,0.5)', pointerEvents: 'none' }}>
                                 ↕ 위아래로 당겨서 크기 조절
                             </div>
@@ -387,7 +387,7 @@ export default function IPadSheet() {
                     marginTop: '15px',
                     width: '100%',
                     flex: 1,
-                    minHeight: '200px',
+                    minHeight: 0,
                     display: 'flex',
                     flexDirection: 'column',
                     borderRadius: '20px',
