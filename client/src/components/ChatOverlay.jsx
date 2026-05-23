@@ -170,12 +170,14 @@ export default function ChatOverlay({ socket, role, inline = false }) {
     return (
         <>
             {/* Floating Action Button */}
-            {!inline && <button className={`chat-fab ${isOpen ? 'open' : ''}`} onClick={toggleChat}>}
+            {!inline && (
+                <button className={`chat-fab ${isOpen ? 'open' : ''}`} onClick={toggleChat}>
                 {isOpen ? '✕' : '💬'}
                 {!isOpen && unreadCount > 0 && (
                     <span className="chat-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>
                 )}
-            </button>}
+            </button>
+            )}
 
             {/* Chat Drawer/Overlay */}
             <div className={`chat-overlay ${isOpen || inline ? 'active' : ''} ${inline ? 'inline' : ''}`}>
