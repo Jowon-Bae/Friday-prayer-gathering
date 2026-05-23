@@ -1,3 +1,4 @@
+.splash-title { font-family: 'Pretendard', 'Inter', sans-serif; }
 .splash-container {
     position: fixed;
     top: 0;
@@ -48,8 +49,7 @@
 
 .splash-title {
     text-align: center;
-    font-size: 0.9rem;
-    /* Reduced to 60% of original 1.5rem size */
+    font-size: 0.99rem; /* 0.9rem * 1.1 = 10% larger */
     letter-spacing: 2px;
     animation: fadeIn 1s ease-in forwards;
     opacity: 0;

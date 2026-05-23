@@ -77,6 +77,7 @@ const defaultState = () => ({
 const roomStates = {};
 const roomChats = {};
 const MAX_CHAT_HISTORY = 50;
+const roomPasswords = {}; // roomCode -> password (empty string = no password)
 
 function getRoomState(room) {
     if (!roomStates[room]) roomStates[room] = defaultState();
@@ -113,6 +114,22 @@ io.on('connection', (socket) => {
         // Send current room state and chat history to this client
         socket.emit('state_update', getRoomState(room));
         socket.emit('chat_history', getRoomChats(room));
+    });
+
+    // Verify password before joining
+    socket.on('verify_room', ({ roomCode, password }) => {
+        const room = (roomCode || 'DEFAULT').toUpperCase().trim();
+        const stored = roomPasswords[room] || '';
+        const ok = stored === '' || stored === (password || '');
+        socket.emit('verify_room_result', { ok, room });
+    });
+
+    // Master sets room password
+    socket.on('set_room_password', ({ roomCode, password }) => {
+        const room = (roomCode || 'DEFAULT').toUpperCase().trim();
+        roomPasswords[room] = password || '';
+        console.log(`Room ${room} password updated`);
+        socket.emit('set_room_password_result', { ok: true });
     });
 
     // Listen for state changes from Master

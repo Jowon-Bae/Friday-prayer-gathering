@@ -1,4 +1,7 @@
-import { useState } from 'react';
+const fs = require('fs');
+
+// Rewrite App.jsx Home with password flow
+const appJsx = `import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import Master from './pages/Master';
@@ -10,8 +13,8 @@ import './index.css';
 
 const isCloudflare = window.location.hostname.includes('trycloudflare.com');
 const serverUrl = import.meta.env.PROD ? '' : (isCloudflare
-    ? `https://outside-concepts-mouse-hypothesis.trycloudflare.com`
-    : `http://${window.location.hostname}:3001`);
+    ? \`https://outside-concepts-mouse-hypothesis.trycloudflare.com\`
+    : \`http://\${window.location.hostname}:3001\`);
 const homeSocket = io(serverUrl, { extraHeaders: { "Bypass-Tunnel-Reminder": "true" } });
 
 function App() {
@@ -79,7 +82,7 @@ function Home() {
         localStorage.removeItem('roomCode');
     };
 
-    const getLink = (path) => `${path}?room=${confirmedRoom}`;
+    const getLink = (path) => \`\${path}?room=\${confirmedRoom}\`;
 
     if (confirmedRoom) {
         return (
@@ -165,3 +168,7 @@ function Home() {
 }
 
 export default App;
+`;
+
+fs.writeFileSync('client/src/App.jsx', appJsx);
+console.log('App.jsx with password flow written');

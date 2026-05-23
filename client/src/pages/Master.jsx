@@ -54,6 +54,12 @@ export default function Master() {
     const roomCode = (searchParams.get('room') || localStorage.getItem('roomCode') || 'DEFAULT').toUpperCase().trim();
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [roomPassword, setRoomPassword] = useState('');
+    
+    const handleSetPassword = () => {
+        socket.emit('set_room_password', { roomCode, password: roomPassword });
+        alert('팀 비밀번호가 설정되었습니다.');
+    };
 
     // For continuous button press
     const holdTimeoutRef = useRef(null);
