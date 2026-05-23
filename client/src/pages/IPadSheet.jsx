@@ -344,8 +344,10 @@ export default function IPadSheet() {
                     }}>
                         💬 실시간 팀 채팅
                     </div>
-                    <div style={{ flex: 1, backgroundColor: 'rgba(30, 30, 30, 0.9)' }}>
-                        <ChatOverlay socket={socket} role="아이패드(iPad)" inline={true} onImageClick={setChatImagePreview} />
+                    <div style={{ flex: 1, backgroundColor: 'rgba(30, 30, 30, 0.9)', position: 'relative', minHeight: 0, overflow: 'hidden' }}>
+                        <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, display: 'flex', flexDirection: 'column' }}>
+                            <ChatOverlay socket={socket} role="아이패드(iPad)" inline={true} onImageClick={setChatImagePreview} />
+                        </div>
                     </div>
                 </div>
             </Rnd>
