@@ -163,16 +163,16 @@ export default function IPadSheet() {
                 <TransformWrapper 
                     key={chatImagePreview}
                     initialScale={1} 
-                    centerOnInit={false}
+                    centerOnInit={true}
                     doubleClick={{ disabled: false }}
                     pinch={{ step: 5 }}
                 >
-                    <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
+                    <TransformComponent wrapperStyle={{ width: 'calc(100vw - 390px)', height: '100dvh', position: 'absolute', right: 0, top: 0 }} contentStyle={{ width: '100%', height: '100%' }}>
                         <img 
                             src={chatImagePreview} 
                             alt="Chat Preview" 
                             className="sheet-fade-in"
-                            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }}
                         />
                     </TransformComponent>
                 </TransformWrapper>
