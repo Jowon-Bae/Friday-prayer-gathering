@@ -475,30 +475,25 @@ export default function IPadSheet() {
                             <div className="member-cues-container" style={{ marginTop: '20px', backgroundColor: 'rgba(50,50,50,0.5)', borderRadius: '15px', border: '1px solid #555', padding: '15px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <div style={{ color: '#aaa', fontSize: '1rem', marginBottom: '10px', letterSpacing: '2px', fontWeight: 'bold' }}>IN-EAR CONTROL</div>
 
-                                {hasInEarTargets && (
-                                    <>
-                                        <div style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '4px', color: 'white' }}>제 인이어에</div>
-                                        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '4px' }}>
-                                            {state.current_inear_targets.map(tId => (
-                                                <div key={tId} className="member-cue" style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', fontSize: '1.4rem', padding: '4px 10px', borderRadius: '8px', margin: '0' }}>
-                                                    {inearTargetMap[tId] || tId}
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div style={{ fontSize: '1.1rem', fontWeight: 'bold', marginTop: '4px', marginBottom: '8px', color: 'white' }}>소리를</div>
-                                    </>
-                                )}
-
-                                {hasInEarAdj && (
-                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5px' }}>
-                                        <div className="member-cue" style={{ backgroundColor: 'transparent', color: state.current_inear_vol > 0 ? '#ef4444' : '#3b82f6', fontSize: '2.2rem', padding: '0 0.5rem', margin: '0 0 5px 0' }}>
-                                            {state.current_inear_vol > 0 ? `+${state.current_inear_vol}` : state.current_inear_vol}
-                                        </div>
-                                        <div style={{ fontSize: '1.4rem', fontWeight: 'bold', color: 'white' }}>
-                                            {state.current_inear_vol > 0 ? '올려주세요' : '내려주세요'}
-                                        </div>
-                                    </div>
-                                )}
+                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                                    <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#ccc' }}>제 인이어에</span>
+                                    {hasInEarTargets && state.current_inear_targets.map(tId => (
+                                        <span key={tId} style={{ backgroundColor: 'rgba(255,255,255,0.2)', color: '#fff', fontSize: '1.1rem', fontWeight: 'bold', padding: '4px 10px', borderRadius: '8px' }}>
+                                            {inearTargetMap[tId] || tId}
+                                        </span>
+                                    ))}
+                                    {hasInEarTargets && <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#ccc' }}>소리를</span>}
+                                    {hasInEarAdj && (
+                                        <>
+                                            <span style={{ color: state.current_inear_vol > 0 ? '#ef4444' : '#3b82f6', fontSize: '1.6rem', fontWeight: '900', textShadow: '0 2px 5px rgba(0,0,0,0.5)' }}>
+                                                {state.current_inear_vol > 0 ? `+${state.current_inear_vol}` : state.current_inear_vol}
+                                            </span>
+                                            <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#ccc' }}>
+                                                {state.current_inear_vol > 0 ? '올려주세요' : '내려주세요'}
+                                            </span>
+                                        </>
+                                    )}
+                                </div>
                             </div>
                         )}
                     </div>

@@ -203,30 +203,25 @@ export default function Member() {
                 <div className="member-cues-container" style={{ marginTop: '0.5rem', backgroundColor: 'rgba(50,50,50,0.5)', borderColor: '#555', minHeight: 'auto', paddingTop: '0.5rem', paddingBottom: '0.5rem', width: '90%', maxWidth: '600px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div style={{ color: '#aaa', fontSize: '1.2rem', marginBottom: '0.5rem', letterSpacing: '2px', fontWeight: 'bold' }}>IN-EAR CONTROL</div>
 
-                    {hasInEarTargets && (
-                        <>
-                            <div style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '2px', color: 'white' }}>제 인이어에</div>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '2px' }}>
-                                {state.current_inear_targets.map(tId => (
-                                    <div key={tId} className="member-cue" style={{ backgroundColor: 'transparent', color: '#111', fontSize: '2rem', padding: '0 0.5rem', margin: '0' }}>
-                                        {inearTargetMap[tId] || tId}
-                                    </div>
-                                ))}
-                            </div>
-                            <div style={{ fontSize: '1.2rem', fontWeight: 'bold', marginTop: '2px', marginBottom: '2px', color: 'white' }}>소리를</div>
-                        </>
-                    )}
-
-                    {hasInEarAdj && (
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <div className="member-cue" style={{ backgroundColor: 'transparent', color: state.current_inear_vol > 0 ? '#d32f2f' : '#1976d2', fontSize: '2.5rem', padding: '0 0.5rem', margin: '0 0 2px 0' }}>
-                                {state.current_inear_vol > 0 ? `+${state.current_inear_vol}` : state.current_inear_vol}
-                            </div>
-                            <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: 'white' }}>
-                                {state.current_inear_vol > 0 ? '올려주세요' : '내려주세요'}
-                            </div>
-                        </div>
-                    )}
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                        <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#ccc' }}>제 인이어에</span>
+                        {hasInEarTargets && state.current_inear_targets.map(tId => (
+                            <span key={tId} style={{ backgroundColor: 'rgba(255,255,255,0.2)', color: '#fff', fontSize: '1.1rem', fontWeight: 'bold', padding: '4px 10px', borderRadius: '8px' }}>
+                                {inearTargetMap[tId] || tId}
+                            </span>
+                        ))}
+                        {hasInEarTargets && <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#ccc' }}>소리를</span>}
+                        {hasInEarAdj && (
+                            <>
+                                <span style={{ color: state.current_inear_vol > 0 ? '#ff5252' : '#448aff', fontSize: '1.6rem', fontWeight: '900', textShadow: '0 2px 5px rgba(0,0,0,0.5)' }}>
+                                    {state.current_inear_vol > 0 ? `+${state.current_inear_vol}` : state.current_inear_vol}
+                                </span>
+                                <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#ccc' }}>
+                                    {state.current_inear_vol > 0 ? '올려주세요' : '내려주세요'}
+                                </span>
+                            </>
+                        )}
+                    </div>
                 </div>
             )}
 
