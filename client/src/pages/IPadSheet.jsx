@@ -165,7 +165,7 @@ export default function IPadSheet() {
     return (
         <div style={{ position: 'relative', width: '100vw', height: '100dvh', backgroundColor: '#111', overflow: 'hidden' }}>
             <div className={`connection-status ${isConnected ? 'status-connected' : 'status-disconnected'}`} style={{ zIndex: 10 }}>
-                {isConnected ? 'LIVE' : 'RECONNECTING...'}
+                {isConnected ? 'LIVE' : 'RECONNECTING...'} · {roomCode}
             </div>
 
             {/* MAIN SHEET MUSIC AREA */}

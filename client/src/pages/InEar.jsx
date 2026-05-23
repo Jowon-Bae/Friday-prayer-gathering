@@ -111,7 +111,7 @@ export default function InEar() {
     return (
         <div className="master-container" style={{ padding: '1rem', paddingTop: 'max(50px, env(safe-area-inset-top))', overflowY: 'auto' }}>
             <div className={`connection-status ${isConnected ? 'status-connected' : 'status-disconnected'}`}>
-                {isConnected ? 'ONLINE' : 'OFFLINE'}
+                {isConnected ? 'ONLINE' : 'OFFLINE'} · {roomCode}
             </div>
 
             <h1 style={{ textAlign: 'center', margin: '0 0 1rem 0', fontSize: '1.5rem' }}>인이어(In-Ear) 조정</h1>

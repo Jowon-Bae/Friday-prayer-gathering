@@ -227,7 +227,7 @@ export default function Master() {
 
             <div className="tempo-control" style={{ position: 'relative', paddingTop: '35px', paddingBottom: '10px' }}>
                 <div className={`connection-status ${isConnected ? 'status-connected' : 'status-disconnected'}`} style={{ position: 'absolute', top: '5px', right: '10px', fontSize: '0.7rem' }}>
-                    {isConnected ? 'ONLINE' : 'OFFLINE'}
+                    {isConnected ? 'ONLINE' : 'OFFLINE'} · {roomCode}
                 </div>
 
                 <button className="tempo-btn" onClick={() => changeBpm(-10)}>-10</button>

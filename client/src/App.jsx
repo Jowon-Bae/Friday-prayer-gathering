@@ -65,7 +65,7 @@ function Home() {
                 boxSizing: 'border-box'
             }}>
                 <div style={{ fontSize: '0.82rem', color: '#aaa', fontWeight: 'bold', letterSpacing: '1px', marginBottom: '12px', textAlign: 'center' }}>
-                    🏠 팀 코드 입력
+                    팀 코드 입력
                 </div>
                 <input
                     type="text"

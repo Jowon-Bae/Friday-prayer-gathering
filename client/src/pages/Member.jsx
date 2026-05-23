@@ -151,7 +151,7 @@ export default function Member() {
             }}
         >
             <div className={`connection-status ${isConnected ? 'status-connected' : 'status-disconnected'}`}>
-                {isConnected ? 'LIVE' : 'RECONNECTING...'}
+                {isConnected ? 'LIVE' : 'RECONNECTING...'} · {roomCode}
             </div>
 
             {isTransitioning && (
