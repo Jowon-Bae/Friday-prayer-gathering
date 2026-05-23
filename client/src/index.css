@@ -289,7 +289,8 @@ body {
 .song-control {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-left: 15px;
   gap: 6px;
   padding: 0.3rem;
   background: #222;

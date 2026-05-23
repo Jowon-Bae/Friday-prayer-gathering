@@ -216,11 +216,24 @@ export default function Master() {
                 >
                     GO
                 </button>
-                {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)] ? (
-                    <span style={{ fontSize: '1rem', fontWeight: 'bold', color: 'white', marginLeft: '5px' }}>
-                        {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)]}
-                    </span>
-                ) : null}
+                {songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)] ? (function() {
+                        const title = songMap[inputSongNum] || songMap[parseInt(inputSongNum, 10)];
+                        const isLong = title.length > 15;
+                        return (
+                            <span style={{ 
+                                fontSize: isLong ? '0.85rem' : '1rem', 
+                                fontWeight: 'bold', 
+                                color: 'white', 
+                                marginLeft: '5px',
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                flex: 1
+                            }}>
+                                {title}
+                            </span>
+                        );
+                    })() : null}
             </div>
             
             <div style={{ display: 'flex', gap: '20px', margin: '10px 0', width: '100%', justifyContent: 'center' }}>
