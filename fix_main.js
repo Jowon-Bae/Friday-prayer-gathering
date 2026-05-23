@@ -1,4 +1,21 @@
-import { useState } from 'react';
+const fs = require('fs');
+
+// Restore main.jsx to its proper role: just mount the App
+const mainJsx = `import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);
+`;
+
+fs.writeFileSync('client/src/main.jsx', mainJsx);
+
+// Move the room-based Home and App into App.jsx
+const appJsx = `import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Master from './pages/Master';
 import Member from './pages/Member';
@@ -37,7 +54,7 @@ function Home() {
         localStorage.setItem('roomCode', code);
     };
 
-    const getLink = (path) => roomCode ? `${path}?room=${roomCode}` : null;
+    const getLink = (path) => roomCode ? \`\${path}?room=\${roomCode}\` : null;
 
     return (
         <div className="home-container">
@@ -120,3 +137,7 @@ function Home() {
 }
 
 export default App;
+`;
+
+fs.writeFileSync('client/src/App.jsx', appJsx);
+console.log('Restored main.jsx and updated App.jsx');
