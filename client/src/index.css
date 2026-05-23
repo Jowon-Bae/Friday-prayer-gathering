@@ -425,3 +425,7 @@ body {
 .sheet-fade-in {
   animation: sheet-fade-in 1.5s ease-out forwards;
 }
+@keyframes toast-pop {
+    0% { opacity: 0; transform: translate(-50%, -20px) scale(0.9); }
+    100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}

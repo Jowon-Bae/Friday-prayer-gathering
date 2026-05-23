@@ -9,6 +9,7 @@ export default function ChatOverlay({ socket, role, inline = false, onImageClick
     const [isUploading, setIsUploading] = useState(false);
     const [fullscreenImage, setFullscreenImage] = useState(null); // stores the msg object of the image
     const [dragOffset, setDragOffset] = useState(0);              // for swipe-down to dismiss
+    const [newMessageToast, setNewMessageToast] = useState(false);
     const messagesEndRef = useRef(null);
     const fileInputRef = useRef(null);
     const touchStartY = useRef(0);
@@ -24,6 +25,10 @@ export default function ChatOverlay({ socket, role, inline = false, onImageClick
             setMessages(prev => [...prev, msg]);
             if (!isOpen) {
                 setUnreadCount(prev => prev + 1);
+            }
+            if (msg.role !== role) {
+                setNewMessageToast(true);
+                setTimeout(() => setNewMessageToast(false), 4000);
             }
         };
 
@@ -308,6 +313,30 @@ export default function ChatOverlay({ socket, role, inline = false, onImageClick
                             )}
                         </div>
                     </div>
+                </div>
+            )}
+
+            {newMessageToast && (
+                <div style={{
+                    position: 'fixed',
+                    top: 'max(40px, env(safe-area-inset-top))',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    backgroundColor: '#3b82f6',
+                    color: 'white',
+                    padding: '12px 24px',
+                    borderRadius: '30px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+                    zIndex: 999999,
+                    fontWeight: 'bold',
+                    fontSize: '1.1rem',
+                    pointerEvents: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    animation: 'toast-pop 0.3s ease-out forwards'
+                }}>
+                    <span style={{ fontSize: '1.4rem' }}>💬</span> 새로운 팀 채팅이 올라왔습니다!
                 </div>
             )}
         </>
