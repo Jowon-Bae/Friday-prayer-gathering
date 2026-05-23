@@ -209,7 +209,7 @@ export default function IPadSheet() {
                     x: 20,
                     y: 160,
                     width: 350,
-                    height: 'auto',
+                    height: 700,
                 }}
                 minWidth={250}
                 bounds="parent"
@@ -330,7 +330,7 @@ export default function IPadSheet() {
                     marginTop: '15px',
                     width: '100%',
                     flex: 1,
-                    minHeight: '400px',
+                    minHeight: '200px',
                     display: 'flex',
                     flexDirection: 'column',
                     borderRadius: '20px',
