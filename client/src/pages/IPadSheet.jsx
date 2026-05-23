@@ -181,7 +181,7 @@ export default function IPadSheet() {
                         onClick={() => setChatImagePreview(null)}
                         style={{
                             position: 'absolute',
-                            top: '40px',
+                            top: '100px',
                             right: '40px',
                             zIndex: 100,
                             backgroundColor: 'rgba(0, 0, 0, 0.7)',
