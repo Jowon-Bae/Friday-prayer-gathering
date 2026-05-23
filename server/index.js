@@ -90,7 +90,12 @@ function getRoomChats(room) {
 
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
-    let currentRoom = null;
+    let currentRoom = 'DEFAULT';
+
+    // Send default state immediately on connection (will be overridden by join_room)
+    socket.join('DEFAULT');
+    socket.emit('state_update', getRoomState('DEFAULT'));
+    socket.emit('chat_history', getRoomChats('DEFAULT'));
 
     // Client joins a room
     socket.on('join_room', (roomCode) => {
