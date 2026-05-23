@@ -1,4 +1,6 @@
-import { useState } from 'react';
+const fs = require('fs');
+
+const appJsx = `import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Master from './pages/Master';
 import Member from './pages/Member';
@@ -46,7 +48,7 @@ function Home() {
         localStorage.setItem('roomCode', code);
     };
 
-    const getLink = (path) => roomCode ? `${path}?room=${roomCode}` : '#';
+    const getLink = (path) => roomCode ? \`\${path}?room=\${roomCode}\` : '#';
 
     return (
         <div className="home-container">
@@ -132,3 +134,7 @@ function Home() {
 }
 
 export default App;
+`;
+
+fs.writeFileSync('client/src/App.jsx', appJsx);
+console.log('Fixed App.jsx: splash once per session + mobile-friendly room input');
