@@ -66,7 +66,8 @@ export default function Member() {
 
     useEffect(() => {
         // Only trigger if this is a new value (greater than the last seen value) and not the initial payload
-        if (state.song_trigger && prevTriggerRef.current !== null && state.song_trigger > prevTriggerRef.current) {
+        const isOldTrigger = (Date.now() - state.song_trigger) > 10000;
+        if (state.song_trigger && prevTriggerRef.current !== null && state.song_trigger > prevTriggerRef.current && !isOldTrigger) {
             setIsTransitioning(true);
             const transitionTimer = setTimeout(() => {
                 setIsTransitioning(false);

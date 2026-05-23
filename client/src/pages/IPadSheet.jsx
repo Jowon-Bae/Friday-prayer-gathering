@@ -70,7 +70,8 @@ export default function IPadSheet() {
     const hasReceivedInitialState = useRef(false);
 
     useEffect(() => {
-        if (state.song_trigger && state.song_trigger > prevTriggerRef.current) {
+        const isOldTrigger = (Date.now() - state.song_trigger) > 10000;
+        if (state.song_trigger && state.song_trigger > prevTriggerRef.current && !isOldTrigger) {
             setIsTransitioning(true);
             setChatImagePreview(null);
             const transitionTimer = setTimeout(() => {
