@@ -75,7 +75,7 @@ export default function IPadSheet() {
             setChatBlink(false);
         }, 7058);
     };
-    const [widgetRect, setWidgetRect] = useState({ x: 20, y: 160, width: 350, height: 810 });
+    const [widgetRect, setWidgetRect] = useState({ x: 20, y: 160, width: 370, height: 810 });
     const prevTriggerRef = useRef(0);
     const hasReceivedInitialState = useRef(false);
 
@@ -321,8 +321,8 @@ export default function IPadSheet() {
                 default={{
                     x: 20,
                     y: 160,
-                    width: 350,
-                    height: window.innerHeight - 180,
+                    width: 370,
+                    height: 810,
                 }}
                 onDrag={(e, d) => setWidgetRect(prev => ({ ...prev, x: d.x, y: d.y }))}
                 onResize={(e, direction, ref, delta, position) => {
