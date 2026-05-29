@@ -63,7 +63,7 @@ export default function IPadSheet() {
     const [searchParams] = useSearchParams();
     const roomCode = (searchParams.get('room') || localStorage.getItem('roomCode') || 'DEFAULT').toUpperCase().trim();
     const [isConnected, setIsConnected] = useState(socket.connected);
-    const [isTransitioning, setIsTransitioning] = useState(false);
+    const [transitionPhase, setTransitionPhase] = useState('idle'); // 'idle', 'out', 'in'
     const prevSongRef = useRef(null);
     const [chatImagePreview, setChatImagePreview] = useState(null);
     const [imgError, setImgError] = useState(false);
@@ -83,18 +83,23 @@ export default function IPadSheet() {
     useEffect(() => {
         const isOldTrigger = (Date.now() - state.song_trigger) > 10000;
         if (state.song_trigger && state.song_trigger > prevTriggerRef.current && !isOldTrigger) {
-            setIsTransitioning(true);
             setChatImagePreview(null);
+            setTransitionPhase('out');
             
-            const transitionTimer = setTimeout(() => {
-                setIsTransitioning(false);
+            const inTimer = setTimeout(() => {
+                setTransitionPhase('in');
+            }, 5500);
+
+            const idleTimer = setTimeout(() => {
+                setTransitionPhase('idle');
                 prevSongRef.current = null;
             }, 7058);
 
             prevTriggerRef.current = state.song_trigger;
 
             return () => {
-                clearTimeout(transitionTimer);
+                clearTimeout(inTimer);
+                clearTimeout(idleTimer);
             };
         }
         
@@ -223,9 +228,8 @@ export default function IPadSheet() {
 
     // Split view logic
     const prevSong = prevSongRef.current;
-    // Since Master immediately sets current_song = next_song on trigger, state.current_song IS the target next song during transition!
     const targetNextSong = state.current_song;
-    const showSplitView = isTransitioning && prevSong && targetNextSong && (prevSong !== targetNextSong);
+    const showSplitView = transitionPhase !== 'idle' && prevSong && targetNextSong && (prevSong !== targetNextSong);
     const splitPrevUrl = showSplitView ? `/sheets/${prevSong}.jpg` : null;
     const splitNextUrl = showSplitView ? `/sheets/${targetNextSong}.jpg` : null;
 
@@ -295,23 +299,21 @@ export default function IPadSheet() {
                     </button>
                 </>
             ) : showSplitView ? (
-                <div style={{ 
-                    display: 'flex', 
+                <div className="sheet-container-transition" style={{ 
                     width: availableImageWidth, 
-                    height: '100dvh', 
-                    position: 'absolute', 
                     left: isWidgetOnLeft ? `${availableImageLeft}px` : '20px',
-                    top: 0 
                 }}>
-                    <div style={{ flex: 1, height: '100%', borderRight: '3px solid var(--color-ch)', position: 'relative', overflow: 'hidden' }}>
-                        <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(59,130,246,0.85)', color: 'white', fontSize: '0.85rem', fontWeight: 'bold', padding: '4px 14px', borderRadius: '20px', zIndex: 2, whiteSpace: 'nowrap' }}>{'다음 곡 ' + targetNextSong}</div>
+                    {/* LEFT SIDE: NEXT SONG */}
+                    <div className={transitionPhase === 'out' ? 'anim-fade-in-left' : 'anim-slide-in-center'} style={{ borderRight: '3px solid var(--color-ch)', position: 'relative', overflow: 'hidden' }}>
+                        <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(59,130,246,0.85)', color: 'white', fontSize: '0.85rem', fontWeight: 'bold', padding: '4px 14px', borderRadius: '20px', zIndex: 2, whiteSpace: 'nowrap', transition: 'opacity 0.8s', opacity: transitionPhase === 'in' ? 0 : 1 }}>{'다음 곡 ' + targetNextSong}</div>
                         <TransformWrapper key={'next-' + targetNextSong} initialScale={1} centerOnInit={false} doubleClick={{ disabled: false }} pinch={{ step: 5 }}>
                             <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
-                                <img src={splitNextUrl} alt={'Next ' + targetNextSong} className="sheet-fade-in" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} onError={() => setImgError(true)} />
+                                <img src={splitNextUrl} alt={'Next ' + targetNextSong} style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} onError={() => setImgError(true)} />
                             </TransformComponent>
                         </TransformWrapper>
                     </div>
-                    <div style={{ flex: 1, height: '100%', position: 'relative', overflow: 'hidden' }}>
+                    {/* RIGHT SIDE: CURRENT SONG */}
+                    <div className={transitionPhase === 'out' ? 'anim-slide-out-right' : 'anim-fade-out-right'} style={{ position: 'relative', overflow: 'hidden' }}>
                         <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(60,60,60,0.85)', color: 'white', fontSize: '0.85rem', fontWeight: 'bold', padding: '4px 14px', borderRadius: '20px', zIndex: 2, whiteSpace: 'nowrap' }}>{'현재 곡 ' + prevSong}</div>
                         <TransformWrapper key={'prev-' + prevSong} initialScale={1} centerOnInit={false} doubleClick={{ disabled: false }} pinch={{ step: 5 }}>
                             <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
@@ -341,8 +343,7 @@ export default function IPadSheet() {
                         <img 
                             src={imageUrl} 
                             alt={'Sheet Music for Song ' + activeSong}
-                            className="sheet-fade-in"
-                            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center', animation: 'none' }}
                             onError={() => setImgError(true)}
                         />
                     </TransformComponent>

@@ -437,3 +437,55 @@ body {
 .chat-blink-active {
   animation: chat-header-bg-blink 0.882s cubic-bezier(0.4, 0, 0.6, 1) 8 !important;
 }
+
+/* Dual Sheet Transitions */
+@keyframes slideOutRight {
+    0% { width: 100%; left: 0%; border-right-width: 0px; }
+    100% { width: 50%; left: 50%; border-right-width: 3px; }
+}
+
+@keyframes slideInCenter {
+    0% { width: 50%; left: 0%; border-right-width: 3px; }
+    100% { width: 100%; left: 0%; border-right-width: 0px; }
+}
+
+@keyframes fadeInLeft {
+    0% { opacity: 0; width: 50%; left: 0%; border-right-width: 3px; }
+    100% { opacity: 1; width: 50%; left: 0%; border-right-width: 3px; }
+}
+
+@keyframes fadeOutRight {
+    0% { opacity: 1; width: 50%; left: 50%; }
+    100% { opacity: 0; width: 50%; left: 50%; }
+}
+
+.anim-slide-out-right {
+    animation: slideOutRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    position: absolute;
+    height: 100%;
+}
+
+.anim-fade-in-left {
+    animation: fadeInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    position: absolute;
+    height: 100%;
+}
+
+.anim-slide-in-center {
+    animation: slideInCenter 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    position: absolute;
+    height: 100%;
+}
+
+.anim-fade-out-right {
+    animation: fadeOutRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    position: absolute;
+    height: 100%;
+}
+
+.sheet-container-transition {
+    position: absolute;
+    top: 0;
+    height: 100dvh;
+    overflow: hidden;
+}
