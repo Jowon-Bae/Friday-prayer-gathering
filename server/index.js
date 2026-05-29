@@ -146,6 +146,7 @@ io.on('connection', (socket) => {
         const message = {
             id: Date.now() + Math.random().toString(36).substr(2, 5),
             role: data.role || 'User',
+            senderName: data.senderName || '익명',
             text: data.text || '',
             fileUrl: data.fileUrl || null,
             fileName: data.fileName || null,

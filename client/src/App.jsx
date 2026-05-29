@@ -42,6 +42,7 @@ function App() {
 
 function Home() {
     const [roomCode, setRoomCode] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isVerifying, setIsVerifying] = useState(false);
@@ -62,6 +63,7 @@ function Home() {
             if (ok) {
                 localStorage.setItem('roomCode', room);
                 sessionStorage.setItem('confirmedRoom', room);
+                sessionStorage.setItem('confirmedName', userName || '익명');
                 setConfirmedRoom(room);
                 setVerified(true);
             } else {
@@ -125,6 +127,19 @@ function Home() {
                     onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
                     onKeyDown={(e) => e.key === 'Enter' && handleEnter()}
                     placeholder="Team Code"
+                    style={{
+                        width: '100%', padding: '13px 16px', borderRadius: '10px',
+                        border: '1px solid rgba(255,255,255,0.18)', backgroundColor: 'rgba(0,0,0,0.3)',
+                        color: 'white', fontSize: '1rem', textAlign: 'center', outline: 'none',
+                        boxSizing: 'border-box', marginBottom: '10px'
+                    }}
+                />
+                <input
+                    type="text"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleEnter()}
+                    placeholder="Name (이름)"
                     style={{
                         width: '100%', padding: '13px 16px', borderRadius: '10px',
                         border: '1px solid rgba(255,255,255,0.18)', backgroundColor: 'rgba(0,0,0,0.3)',

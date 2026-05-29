@@ -66,7 +66,8 @@ export default function ChatOverlay({ socket, role, inline = false, onImageClick
 
         socket.emit('send_chat', {
             text: inputValue.trim(),
-            role: role
+            role: role,
+            senderName: sessionStorage.getItem('confirmedName') || '익명'
         });
         setInputValue('');
     };
@@ -109,7 +110,8 @@ export default function ChatOverlay({ socket, role, inline = false, onImageClick
                 fileUrl: `${serverUrl}${data.url}`,
                 fileName: data.originalName,
                 fileType: data.mimetype,
-                role: role
+                role: role,
+                senderName: sessionStorage.getItem('confirmedName') || '익명'
             });
 
         } catch (error) {
@@ -204,7 +206,7 @@ export default function ChatOverlay({ socket, role, inline = false, onImageClick
                             const isImage = msg.fileType && msg.fileType.startsWith('image/');
                             return (
                                 <div key={msg.id || idx} className={`chat-bubble-wrapper ${isMe ? 'mine' : 'theirs'}`}>
-                                    {!isMe && <div className="chat-role">{msg.role}</div>}
+                                    {!isMe && <div className="chat-role">{msg.senderName ? `${msg.senderName} (${msg.role})` : msg.role}</div>}
                                     <div className="chat-bubble-row">
                                         <div className={`chat-bubble ${isMe ? 'mine' : 'theirs'}`}>
                                             {msg.fileUrl ? (
