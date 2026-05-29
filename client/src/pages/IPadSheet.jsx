@@ -401,7 +401,7 @@ export default function IPadSheet() {
             >
                 <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
                 {/* FLASH TRANSITION TEXT (Above the box) */}
-                {isTransitioning && (
+                {(transitionPhase !== 'idle') && (
                     <div className="flash-transition" style={{ 
                         position: 'absolute',
                         bottom: 'calc(100% + 15px)',
