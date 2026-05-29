@@ -470,6 +470,8 @@ body {
     animation: fadeInLeft 0.6s ease-out 0.4s both;
     position: absolute;
     height: 100%;
+    border-right-style: solid;
+    border-right-color: var(--color-ch);
 }
 
 .anim-slide-in-center {
@@ -477,6 +479,8 @@ body {
     animation: slideInCenter 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
     position: absolute;
     height: 100%;
+    border-right-style: solid;
+    border-right-color: var(--color-ch);
 }
 
 .anim-fade-out-right {
