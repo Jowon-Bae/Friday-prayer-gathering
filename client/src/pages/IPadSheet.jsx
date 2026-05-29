@@ -64,6 +64,9 @@ export default function IPadSheet() {
     const roomCode = (searchParams.get('room') || localStorage.getItem('roomCode') || 'DEFAULT').toUpperCase().trim();
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [transitionPhase, setTransitionPhase] = useState('idle'); // 'idle', 'out', 'in'
+    const transitionPhaseRef = useRef(transitionPhase);
+    useEffect(() => { transitionPhaseRef.current = transitionPhase; }, [transitionPhase]);
+    const [isInterrupt, setIsInterrupt] = useState(false);
     const prevSongRef = useRef(null);
     const [chatImagePreview, setChatImagePreview] = useState(null);
     const [imgError, setImgError] = useState(false);
@@ -84,6 +87,7 @@ export default function IPadSheet() {
         const isOldTrigger = (Date.now() - state.song_trigger) > 10000;
         if (state.song_trigger && state.song_trigger > prevTriggerRef.current && !isOldTrigger) {
             setChatImagePreview(null);
+            setIsInterrupt(transitionPhaseRef.current !== 'idle');
             setTransitionPhase('out');
             
             const inTimer = setTimeout(() => {
@@ -317,7 +321,7 @@ export default function IPadSheet() {
                         </TransformWrapper>
                     </div>
                     {/* RIGHT SIDE: CURRENT SONG */}
-                    <div className={transitionPhase === 'out' ? 'anim-slide-out-right' : 'anim-fade-out-right'} style={{ overflow: 'hidden' }}>
+                    <div className={transitionPhase === 'out' ? (isInterrupt ? 'anim-slide-left-to-right' : 'anim-slide-out-right') : 'anim-fade-out-right'} style={{ overflow: 'hidden' }}>
                         <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(60,60,60,0.85)', color: 'white', fontSize: '0.85rem', fontWeight: 'bold', padding: '4px 14px', borderRadius: '20px', zIndex: 2, whiteSpace: 'nowrap' }}>{'현재 곡 ' + prevSong}</div>
                         <TransformWrapper key={'prev-' + prevSong} initialScale={1} centerOnInit={false} doubleClick={{ disabled: false }} pinch={{ step: 5 }}>
                             <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>

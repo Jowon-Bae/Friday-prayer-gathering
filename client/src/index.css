@@ -439,6 +439,17 @@ body {
 }
 
 /* Dual Sheet Transitions */
+@keyframes slideLeftToRight {
+    0% { width: 50%; left: 0%; border-right-width: 3px; }
+    100% { width: 50%; left: 50%; border-right-width: 3px; }
+}
+
+.anim-slide-left-to-right {
+    animation: slideLeftToRight 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    position: absolute;
+    height: 100%;
+}
+
 @keyframes slideOutRight {
     0% { width: 100%; left: 0%; border-right-width: 0px; }
     100% { width: 50%; left: 50%; border-right-width: 3px; }
