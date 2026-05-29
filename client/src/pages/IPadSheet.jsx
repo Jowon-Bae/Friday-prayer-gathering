@@ -85,28 +85,16 @@ export default function IPadSheet() {
         if (state.song_trigger && state.song_trigger > prevTriggerRef.current && !isOldTrigger) {
             setIsTransitioning(true);
             setChatImagePreview(null);
-            setState(prev => { prevSongRef.current = prev.current_song; return prev; });
+            
             const transitionTimer = setTimeout(() => {
                 setIsTransitioning(false);
                 prevSongRef.current = null;
             }, 7058);
 
-            const swapTimer = setTimeout(() => {
-                setState(prev => {
-                    if (prev.next_song) {
-                        return {
-                            ...prev,
-                            current_song: prev.next_song,
-                            next_song: ''
-                        };
-                    }
-                    return prev;
-                });
-            }, 5292);
+            prevTriggerRef.current = state.song_trigger;
 
             return () => {
                 clearTimeout(transitionTimer);
-                clearTimeout(swapTimer);
             };
         }
         
@@ -137,6 +125,9 @@ export default function IPadSheet() {
                     if (newState.song_trigger) {
                         prevTriggerRef.current = newState.song_trigger;
                     }
+                } else if (newState.song_trigger && newState.song_trigger > prevTriggerRef.current) {
+                    // Capture the previous song EXACTLY before applying the new state!
+                    prevSongRef.current = prev.current_song;
                 }
                 return { ...prev, ...newState };
             });
@@ -232,7 +223,8 @@ export default function IPadSheet() {
 
     // Split view logic
     const prevSong = prevSongRef.current;
-    const targetNextSong = state.next_song || prevSong;
+    // Since Master immediately sets current_song = next_song on trigger, state.current_song IS the target next song during transition!
+    const targetNextSong = state.current_song;
     const showSplitView = isTransitioning && prevSong && targetNextSong && (prevSong !== targetNextSong);
     const splitPrevUrl = showSplitView ? `/sheets/${prevSong}.jpg` : null;
     const splitNextUrl = showSplitView ? `/sheets/${targetNextSong}.jpg` : null;
