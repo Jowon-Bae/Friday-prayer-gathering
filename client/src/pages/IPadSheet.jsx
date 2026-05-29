@@ -145,8 +145,12 @@ export default function IPadSheet() {
         };
     }, []);
 
-    // During transition: show split view. After swap, show current.
-    const activeSong = state.current_song;
+    // Detect if a transition is about to start in the next frame
+    const isPendingTransition = state.song_trigger && state.song_trigger > prevTriggerRef.current;
+    
+    // Active song is the one currently playing (or transitioned to).
+    // If a transition is pending, freeze the active song to the previous one to prevent a 1-frame flash!
+    const activeSong = isPendingTransition ? (prevSongRef.current || state.current_song) : state.current_song;
 
     // Reset image error state when active song changes
     useEffect(() => {
