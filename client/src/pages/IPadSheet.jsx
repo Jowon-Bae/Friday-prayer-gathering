@@ -409,7 +409,7 @@ export default function IPadSheet() {
                     </div>
 
                     <div style={{ padding: '1.5rem', width: '100%', height: '100%', overflowY: 'auto' }}>
-                        <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>현재 곡</div>
+                        <div style={{ fontSize: '1rem', color: '#ccc', fontWeight: 'bold', marginBottom: '4px' }}>현재 곡</div>
                         <div style={{ fontSize: '4rem', fontWeight: '900', color: 'white', lineHeight: 1 }}>{activeSong || '-'}</div>
                         {(function() {
                             const title = songMap[activeSong] || songMap[parseInt(activeSong, 10)] || '';
@@ -433,7 +433,7 @@ export default function IPadSheet() {
 
                         <div style={{ height: '1px', width: '100%', backgroundColor: 'rgba(255,255,255,0.15)', marginBottom: '15px' }}></div>
                         <div style={{ fontSize: '1rem', color: '#888', fontWeight: 'bold', marginBottom: '4px' }}>다음 곡</div>
-                        <div style={{ fontSize: '2.8rem', fontWeight: 'bold', color: '#aaa', lineHeight: 1 }}>{state.next_song || '-'}</div>
+                        <div style={{ fontSize: '2.8rem', fontWeight: 'bold', color: '#eee', lineHeight: 1 }}>{state.next_song || '-'}</div>
                         {(function() {
                             const title = songMap[state.next_song] || songMap[parseInt(state.next_song, 10)] || '';
                             const charFactor = title.length > 0 ? title.split('').reduce((acc, char) => acc + (char.charCodeAt(0) > 255 ? 1 : 0.6), 0) : 1;
