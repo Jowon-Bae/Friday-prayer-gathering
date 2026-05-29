@@ -222,10 +222,21 @@ export default function IPadSheet() {
     const hasInEarTargets = state.current_inear_targets && state.current_inear_targets.length > 0;
     const hasInEarAdj = state.current_inear_vol !== 0 && state.current_inear_vol !== undefined;
     const imageUrl = activeSong && !imgError ? `/sheets/${activeSong}.jpg` : null;
+    
+    // Layout constraints so images do not overlap the widget
+    const isWidgetOnLeft = (widgetRect.x + widgetRect.width / 2) < (window.innerWidth / 2);
+    const availableImageLeft = isWidgetOnLeft ? widgetRect.x + widgetRect.width + 20 : 20;
+    const availableImageWidth = isWidgetOnLeft 
+        ? `calc(100vw - ${availableImageLeft + 20}px)`
+        : `${widgetRect.x - 40}px`;
+
+    // Split view logic
     const prevSong = prevSongRef.current;
-    const nextSongDuringTransition = isTransitioning ? (state.next_song || activeSong) : activeSong;
-    const prevImageUrl = (isTransitioning && prevSong && prevSong !== activeSong) ? `/sheets/${prevSong}.jpg` : null;
-    const nextImageUrl = (isTransitioning && nextSongDuringTransition) ? `/sheets/${nextSongDuringTransition}.jpg` : null;
+    const targetNextSong = state.next_song || prevSong;
+    const showSplitView = isTransitioning && prevSong && targetNextSong && (prevSong !== targetNextSong);
+    const splitPrevUrl = showSplitView ? `/sheets/${prevSong}.jpg` : null;
+    const splitNextUrl = showSplitView ? `/sheets/${targetNextSong}.jpg` : null;
+
     const activeCueColor = state.current_color && state.current_color !== '#121212' ? state.current_color : '#3b82f6';
 
     return (
@@ -245,18 +256,13 @@ export default function IPadSheet() {
                         pinch={{ step: 5 }}
                     >
                         {(() => {
-                            const isWidgetOnLeft = (widgetRect.x + widgetRect.width / 2) < (window.innerWidth / 2);
-                            const imageLeft = isWidgetOnLeft ? widgetRect.x + widgetRect.width + 20 : 20;
-                            const imageWidth = isWidgetOnLeft 
-                                ? `calc(100vw - ${imageLeft + 20}px)`
-                                : `${widgetRect.x - 40}px`;
                             return (
                                 <TransformComponent 
                                     wrapperStyle={{ 
-                                        width: imageWidth, 
+                                        width: availableImageWidth, 
                                         height: '100dvh', 
                                         position: 'absolute', 
-                                        left: isWidgetOnLeft ? `${imageLeft}px` : '20px',
+                                        left: isWidgetOnLeft ? `${availableImageLeft}px` : '20px',
                                         top: 0 
                                     }} 
                                     contentStyle={{ width: '100%', height: '100%' }}
@@ -296,21 +302,28 @@ export default function IPadSheet() {
                         ✕ 악보로 돌아가기
                     </button>
                 </>
-            ) : (isTransitioning && prevImageUrl && nextImageUrl) ? (
-                <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+            ) : showSplitView ? (
+                <div style={{ 
+                    display: 'flex', 
+                    width: availableImageWidth, 
+                    height: '100dvh', 
+                    position: 'absolute', 
+                    left: isWidgetOnLeft ? `${availableImageLeft}px` : '20px',
+                    top: 0 
+                }}>
                     <div style={{ flex: 1, height: '100%', borderRight: '3px solid var(--color-ch)', position: 'relative', overflow: 'hidden' }}>
                         <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(60,60,60,0.85)', color: 'white', fontSize: '0.85rem', fontWeight: 'bold', padding: '4px 14px', borderRadius: '20px', zIndex: 2, whiteSpace: 'nowrap' }}>{'현재 곡 ' + prevSong}</div>
                         <TransformWrapper key={'prev-' + prevSong} initialScale={1} centerOnInit={false} doubleClick={{ disabled: false }} pinch={{ step: 5 }}>
                             <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
-                                <img src={prevImageUrl} alt={'Prev ' + prevSong} style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} />
+                                <img src={splitPrevUrl} alt={'Prev ' + prevSong} style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} />
                             </TransformComponent>
                         </TransformWrapper>
                     </div>
                     <div style={{ flex: 1, height: '100%', position: 'relative', overflow: 'hidden' }}>
-                        <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(59,130,246,0.85)', color: 'white', fontSize: '0.85rem', fontWeight: 'bold', padding: '4px 14px', borderRadius: '20px', zIndex: 2, whiteSpace: 'nowrap' }}>{'다음 곡 ' + nextSongDuringTransition}</div>
-                        <TransformWrapper key={'next-' + nextSongDuringTransition} initialScale={1} centerOnInit={false} doubleClick={{ disabled: false }} pinch={{ step: 5 }}>
+                        <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(59,130,246,0.85)', color: 'white', fontSize: '0.85rem', fontWeight: 'bold', padding: '4px 14px', borderRadius: '20px', zIndex: 2, whiteSpace: 'nowrap' }}>{'다음 곡 ' + targetNextSong}</div>
+                        <TransformWrapper key={'next-' + targetNextSong} initialScale={1} centerOnInit={false} doubleClick={{ disabled: false }} pinch={{ step: 5 }}>
                             <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
-                                <img src={nextImageUrl} alt={'Next ' + nextSongDuringTransition} className="sheet-fade-in" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} onError={() => setImgError(true)} />
+                                <img src={splitNextUrl} alt={'Next ' + targetNextSong} className="sheet-fade-in" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} onError={() => setImgError(true)} />
                             </TransformComponent>
                         </TransformWrapper>
                     </div>
