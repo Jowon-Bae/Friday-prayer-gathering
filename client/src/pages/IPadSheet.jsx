@@ -328,12 +328,21 @@ export default function IPadSheet() {
                     doubleClick={{ disabled: false }}
                     pinch={{ step: 5 }}
                 >
-                    <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
+                    <TransformComponent 
+                        wrapperStyle={{ 
+                            width: availableImageWidth, 
+                            height: '100dvh', 
+                            position: 'absolute', 
+                            left: isWidgetOnLeft ? `${availableImageLeft}px` : '20px',
+                            top: 0 
+                        }} 
+                        contentStyle={{ width: '100%', height: '100%' }}
+                    >
                         <img 
                             src={imageUrl} 
                             alt={'Sheet Music for Song ' + activeSong}
                             className="sheet-fade-in"
-                            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }}
                             onError={() => setImgError(true)}
                         />
                     </TransformComponent>
