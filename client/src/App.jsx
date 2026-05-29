@@ -139,7 +139,7 @@ function Home() {
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleEnter()}
-                    placeholder="Name (이름)"
+                    placeholder="Name"
                     style={{
                         width: '100%', padding: '13px 16px', borderRadius: '10px',
                         border: '1px solid rgba(255,255,255,0.18)', backgroundColor: 'rgba(0,0,0,0.3)',
