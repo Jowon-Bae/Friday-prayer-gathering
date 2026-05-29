@@ -88,12 +88,12 @@ export default function IPadSheet() {
             
             const inTimer = setTimeout(() => {
                 setTransitionPhase('in');
-            }, 9500);
+            }, 26000);
 
             const idleTimer = setTimeout(() => {
                 setTransitionPhase('idle');
                 prevSongRef.current = null;
-            }, 12200);
+            }, 28500);
 
             prevTriggerRef.current = state.song_trigger;
 
