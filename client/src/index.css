@@ -73,7 +73,7 @@ body {
 }
 
 .flash-transition h2 {
-  animation: flash-text-blink 0.882s cubic-bezier(0.4, 0, 0.6, 1) 8;
+  animation: flash-text-blink 0.882s cubic-bezier(0.4, 0, 0.6, 1) 14;
 }
 
 #root {
@@ -435,7 +435,7 @@ body {
   50% { background-color: #3b82f6; }
 }
 .chat-blink-active {
-  animation: chat-header-bg-blink 0.882s cubic-bezier(0.4, 0, 0.6, 1) 8 !important;
+  animation: chat-header-bg-blink 0.882s cubic-bezier(0.4, 0, 0.6, 1) 14 !important;
 }
 
 /* Dual Sheet Transitions */
