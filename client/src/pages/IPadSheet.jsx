@@ -64,6 +64,7 @@ export default function IPadSheet() {
     const roomCode = (searchParams.get('room') || localStorage.getItem('roomCode') || 'DEFAULT').toUpperCase().trim();
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const prevSongRef = useRef(null);
     const [chatImagePreview, setChatImagePreview] = useState(null);
     const [imgError, setImgError] = useState(false);
     const [chatBlink, setChatBlink] = useState(false);
@@ -84,8 +85,10 @@ export default function IPadSheet() {
         if (state.song_trigger && state.song_trigger > prevTriggerRef.current && !isOldTrigger) {
             setIsTransitioning(true);
             setChatImagePreview(null);
+            setState(prev => { prevSongRef.current = prev.current_song; return prev; });
             const transitionTimer = setTimeout(() => {
                 setIsTransitioning(false);
+                prevSongRef.current = null;
             }, 7058);
 
             const swapTimer = setTimeout(() => {
@@ -146,8 +149,8 @@ export default function IPadSheet() {
         };
     }, []);
 
-    // Use the next song immediately when transition starts so musicians can prepare
-    const activeSong = (isTransitioning && state.next_song) ? state.next_song : state.current_song;
+    // During transition: show split view. After swap, show current.
+    const activeSong = state.current_song;
 
     // Reset image error state when active song changes
     useEffect(() => {
@@ -219,6 +222,10 @@ export default function IPadSheet() {
     const hasInEarTargets = state.current_inear_targets && state.current_inear_targets.length > 0;
     const hasInEarAdj = state.current_inear_vol !== 0 && state.current_inear_vol !== undefined;
     const imageUrl = activeSong && !imgError ? `/sheets/${activeSong}.jpg` : null;
+    const prevSong = prevSongRef.current;
+    const nextSongDuringTransition = isTransitioning ? (state.next_song || activeSong) : activeSong;
+    const prevImageUrl = (isTransitioning && prevSong && prevSong !== activeSong) ? `/sheets/${prevSong}.jpg` : null;
+    const nextImageUrl = (isTransitioning && nextSongDuringTransition) ? `/sheets/${nextSongDuringTransition}.jpg` : null;
     const activeCueColor = state.current_color && state.current_color !== '#121212' ? state.current_color : '#3b82f6';
 
     return (
@@ -289,6 +296,25 @@ export default function IPadSheet() {
                         ✕ 악보로 돌아가기
                     </button>
                 </>
+            ) : (isTransitioning && prevImageUrl && nextImageUrl) ? (
+                <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+                    <div style={{ flex: 1, height: '100%', borderRight: '3px solid var(--color-ch)', position: 'relative', overflow: 'hidden' }}>
+                        <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(60,60,60,0.85)', color: 'white', fontSize: '0.85rem', fontWeight: 'bold', padding: '4px 14px', borderRadius: '20px', zIndex: 2, whiteSpace: 'nowrap' }}>{'현재 곡 ' + prevSong}</div>
+                        <TransformWrapper key={'prev-' + prevSong} initialScale={1} centerOnInit={false} doubleClick={{ disabled: false }} pinch={{ step: 5 }}>
+                            <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
+                                <img src={prevImageUrl} alt={'Prev ' + prevSong} style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} />
+                            </TransformComponent>
+                        </TransformWrapper>
+                    </div>
+                    <div style={{ flex: 1, height: '100%', position: 'relative', overflow: 'hidden' }}>
+                        <div style={{ position: 'absolute', top: '12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'rgba(59,130,246,0.85)', color: 'white', fontSize: '0.85rem', fontWeight: 'bold', padding: '4px 14px', borderRadius: '20px', zIndex: 2, whiteSpace: 'nowrap' }}>{'다음 곡 ' + nextSongDuringTransition}</div>
+                        <TransformWrapper key={'next-' + nextSongDuringTransition} initialScale={1} centerOnInit={false} doubleClick={{ disabled: false }} pinch={{ step: 5 }}>
+                            <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
+                                <img src={nextImageUrl} alt={'Next ' + nextSongDuringTransition} className="sheet-fade-in" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} onError={() => setImgError(true)} />
+                            </TransformComponent>
+                        </TransformWrapper>
+                    </div>
+                </div>
             ) : imageUrl ? (
                 <TransformWrapper 
                     key={activeSong}
@@ -300,7 +326,7 @@ export default function IPadSheet() {
                     <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
                         <img 
                             src={imageUrl} 
-                            alt={`Sheet Music for Song ${activeSong}`} 
+                            alt={'Sheet Music for Song ' + activeSong}
                             className="sheet-fade-in"
                             style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right' }}
                             onError={() => setImgError(true)}
