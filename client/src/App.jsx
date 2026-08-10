@@ -1,18 +1,12 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { io } from 'socket.io-client';
+import socket from './socket';
 import Master from './pages/Master';
 import Member from './pages/Member';
 import InEar from './pages/InEar';
 import IPadSheet from './pages/IPadSheet';
 import SplashScreen from './components/SplashScreen';
 import './index.css';
-
-const isCloudflare = window.location.hostname.includes('trycloudflare.com');
-const serverUrl = import.meta.env.PROD ? '' : (isCloudflare
-    ? `https://outside-concepts-mouse-hypothesis.trycloudflare.com`
-    : `http://${window.location.hostname}:3001`);
-const homeSocket = io(serverUrl, { extraHeaders: { "Bypass-Tunnel-Reminder": "true" } });
 
 function App() {
     const [showSplash, setShowSplash] = useState(() => {
@@ -57,8 +51,8 @@ function Home() {
         if (!code) { setError('팀 코드를 입력해주세요'); return; }
         setIsVerifying(true);
         setError('');
-        homeSocket.emit('verify_room', { roomCode: code, password });
-        homeSocket.once('verify_room_result', ({ ok, room }) => {
+        socket.emit('verify_room', { roomCode: code, password });
+        socket.once('verify_room_result', ({ ok, room }) => {
             setIsVerifying(false);
             if (ok) {
                 localStorage.setItem('roomCode', room);

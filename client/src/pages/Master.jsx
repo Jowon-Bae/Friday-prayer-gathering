@@ -1,18 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { io } from 'socket.io-client';
+import socket from '../socket';
 import { songMap } from '../utils/songMap';
 import ChatOverlay from '../components/ChatOverlay';
-
-const isCloudflare = window.location.hostname.includes('trycloudflare.com');
-const serverUrl = import.meta.env.PROD ? '' : (isCloudflare
-    ? `https://outside-concepts-mouse-hypothesis.trycloudflare.com`
-    : `http://${window.location.hostname}:3001`);
-const socket = io(serverUrl, {
-    extraHeaders: {
-        "Bypass-Tunnel-Reminder": "true"
-    }
-});
 
 // Group 1: Song Sections
 const sections = [

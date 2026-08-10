@@ -13,6 +13,11 @@ export default function ChatOverlay({ socket, role, inline = false, onImageClick
     const fileInputRef = useRef(null);
     const touchStartY = useRef(0);
 
+    const isOpenRef = useRef(isOpen);
+    useEffect(() => {
+        isOpenRef.current = isOpen;
+    }, [isOpen]);
+
     useEffect(() => {
         if (!socket) return;
 
@@ -22,7 +27,7 @@ export default function ChatOverlay({ socket, role, inline = false, onImageClick
 
         const handleNewMessage = (msg) => {
             setMessages(prev => [...prev, msg]);
-            if (!isOpen) {
+            if (!isOpenRef.current) {
                 setUnreadCount(prev => prev + 1);
             }
             if (msg.role !== role) {
@@ -43,7 +48,8 @@ export default function ChatOverlay({ socket, role, inline = false, onImageClick
             socket.off('chat_message', handleNewMessage);
             socket.off('chat_deleted', handleDelete);
         };
-    }, [socket, isOpen]);
+    }, [socket, role, onNewMessage]);
+
 
     useEffect(() => {
         if (isOpen) {

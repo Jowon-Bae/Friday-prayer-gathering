@@ -78,6 +78,22 @@ const roomStates = {};
 const roomChats = {};
 const MAX_CHAT_HISTORY = 50;
 const roomPasswords = {}; // roomCode -> password (empty string = no password)
+const roomLastActive = {}; // roomCode -> timestamp (ms) of last activity
+
+// Clean up rooms that have been idle for more than 24 hours to prevent memory leaks.
+const ROOM_TTL_MS = 24 * 60 * 60 * 1000;
+setInterval(() => {
+    const now = Date.now();
+    for (const room of Object.keys(roomLastActive)) {
+        if (now - roomLastActive[room] > ROOM_TTL_MS) {
+            delete roomStates[room];
+            delete roomChats[room];
+            delete roomPasswords[room];
+            delete roomLastActive[room];
+            console.log(`Room ${room} cleaned up due to inactivity.`);
+        }
+    }
+}, 60 * 60 * 1000); // run every hour
 
 function getRoomState(room) {
     if (!roomStates[room]) roomStates[room] = defaultState();
@@ -109,6 +125,7 @@ io.on('connection', (socket) => {
 
         currentRoom = room;
         socket.join(room);
+        roomLastActive[room] = Date.now();
         console.log(`${socket.id} joined room: ${room}`);
 
         // Send current room state and chat history to this client
@@ -136,6 +153,7 @@ io.on('connection', (socket) => {
     socket.on('update_state', (newState) => {
         if (!currentRoom) return;
         roomStates[currentRoom] = { ...getRoomState(currentRoom), ...newState };
+        roomLastActive[currentRoom] = Date.now();
         io.to(currentRoom).emit('state_update', roomStates[currentRoom]);
     });
 
